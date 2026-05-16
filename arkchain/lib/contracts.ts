@@ -1,17 +1,18 @@
-import addressesJson from "../../addresses.json";
+// Deployed on Avalanche Fuji — 2026-05-16
+// Source of truth: addresses.json at project root
 import { createPublicClient, http, parseAbiItem } from "viem";
 import { avalancheFuji } from "viem/chains";
 
 export const CONTRACT_ADDRESSES = {
-  OrderBook: addressesJson.contracts.OrderBook as `0x${string}`,
-  EncryptedERC: addressesJson.contracts.EncryptedERC as `0x${string}`,
-  MockUSDC: addressesJson.contracts.MockUSDC as `0x${string}`,
-  Registrar: addressesJson.contracts.Registrar as `0x${string}`,
+  OrderBook:    "0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10" as `0x${string}`,
+  EncryptedERC: "0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2" as `0x${string}`,
+  MockUSDC:     "0x6aE098cCDC0098D7106A7Ed9428D78564d97CBED" as `0x${string}`,
+  Registrar:    "0x5acCC50Af240b25A9f63Bd34A4Ae0ffD7d178D54" as `0x${string}`,
 };
 
 export const KNOWN_ADDRESSES: Record<string, string> = {
-  [addressesJson.auditorAddress.toLowerCase()]: "Auditor CNBV",
-  [addressesJson.issuerAddress.toLowerCase()]: "Arkangeles (Emisor)",
+  "0x67bfa2dc3bc228fc4947683cc7f10ad1527acd77": "Auditor CNBV",
+  "0x47bfb16f80e892d8bc2dc7aae2312979e4016b17": "Arkangeles (Emisor)",
 };
 
 // JSON ABI for writeContract calls (functions only)
@@ -78,7 +79,7 @@ export const PRIVATE_MINT_EVENT = parseAbiItem(
 
 // eERC20 contract address → frontend companyId (one EncryptedERC deployed for hackathon)
 export const EERC20_TO_COMPANY_ID: Record<string, string> = {
-  [addressesJson.contracts.EncryptedERC.toLowerCase()]: "fintechmx",
+  [CONTRACT_ADDRESSES.EncryptedERC.toLowerCase()]: "fintechmx",
 };
 
 // Hardcoded rate for MXN↔USDC conversion (no oracle in hackathon)
