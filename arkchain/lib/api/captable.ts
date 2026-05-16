@@ -1,6 +1,15 @@
 import { CapTableEntry, CorporateEvent, Company } from "@/lib/types";
 import { mockCapTable, mockCorporateEvents } from "@/lib/mocks/seed";
 import { mockCompanies } from "@/lib/mocks/companies";
+import { formatAddress } from "@/lib/format";
+import {
+  CONTRACT_ADDRESSES,
+  PRIVATE_MINT_EVENT,
+  PRIVATE_TRANSFER_EVENT,
+  KNOWN_ADDRESSES,
+  fujiClient,
+  getDeployFromBlock,
+} from "@/lib/contracts";
 
 const USE_MOCK = process.env.NEXT_PUBLIC_USE_MOCK !== "false";
 
@@ -9,8 +18,51 @@ export async function getCapTable(companyId: string): Promise<CapTableEntry[]> {
     await new Promise((r) => setTimeout(r, 200));
     return mockCapTable.filter(() => companyId === "fintechmx" || true);
   }
-  const res = await fetch(`/api/captable?companyId=${companyId}`);
-  return res.json();
+
+  // Only the deployed EncryptedERC maps to fintechmx; others fall back to mock
+  if (companyId !== "fintechmx") return mockCapTable;
+
+  const fromBlock = await getDeployFromBlock();
+
+  const mintLogs = await fujiClient.getLogs({
+    address: CONTRACT_ADDRESSES.EncryptedERC,
+    event: PRIVATE_MINT_EVENT,
+    fromBlock,
+    toBlock: "latest",
+  });
+
+  const transferLogs = await fujiClient.getLogs({
+    address: CONTRACT_ADDRESSES.EncryptedERC,
+    event: PRIVATE_TRANSFER_EVENT,
+    fromBlock,
+    toBlock: "latest",
+  });
+
+  // Collect unique holder addresses from mint recipients and transfer recipients
+  const holderSet = new Set<string>();
+  for (const log of mintLogs) {
+    if (log.args.user) holderSet.add(log.args.user.toLowerCase());
+  }
+  for (const log of transferLogs) {
+    if (log.args.to) holderSet.add(log.args.to.toLowerCase());
+  }
+
+  if (holderSet.size === 0) return mockCapTable;
+
+  const totalHolders = holderSet.size;
+  const entries: CapTableEntry[] = Array.from(holderSet).map((addr) => {
+    const checksumAddr = addr as `0x${string}`;
+    const knownName = KNOWN_ADDRESSES[addr];
+    return {
+      holder: checksumAddr,
+      holderName: knownName ?? formatAddress(checksumAddr),
+      category: knownName?.includes("Emisor") ? "founder" : "retail",
+      tokens: BigInt(0),
+      pctOwnership: totalHolders > 0 ? 100 / totalHolders : 0,
+    } satisfies CapTableEntry;
+  });
+
+  return entries;
 }
 
 export async function getCorporateEvents(
