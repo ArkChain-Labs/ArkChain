@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { ChevronRight } from "lucide-react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronRight, LogOut } from "lucide-react";
+import { useDisconnect, useAccount } from "wagmi";
 
 const breadcrumbMap: Record<string, string[]> = {
   "/app/portafolio": ["App", "Portafolio"],
@@ -15,6 +15,14 @@ const breadcrumbMap: Record<string, string[]> = {
 export function Header() {
   const pathname = usePathname();
   const crumbs = breadcrumbMap[pathname] ?? ["App"];
+  const { address } = useAccount();
+  const { disconnect } = useDisconnect();
+  const router = useRouter();
+
+  function handleDisconnect() {
+    disconnect();
+    router.push("/login");
+  }
 
   return (
     <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-6">
@@ -34,11 +42,22 @@ export function Header() {
           </span>
         ))}
       </nav>
-      <ConnectButton
-        showBalance={false}
-        chainStatus="none"
-        accountStatus="avatar"
-      />
+
+      <div className="flex items-center gap-3">
+        {address && (
+          <span className="hidden sm:block font-mono text-xs text-foreground-subtle">
+            {address.slice(0, 6)}…{address.slice(-4)}
+          </span>
+        )}
+        <button
+          onClick={handleDisconnect}
+          title="Desconectar wallet"
+          className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:border-destructive hover:text-destructive transition-colors"
+        >
+          <LogOut className="h-3.5 w-3.5" />
+          Salir
+        </button>
+      </div>
     </header>
   );
 }
