@@ -39,7 +39,8 @@ export async function getAuditEvents(
       .map(([k, v]) => [k, String(v)])
   );
   const res = await fetch(`/api/audit?${params}`);
-  return res.json();
+  const data = await res.json();
+  return Array.isArray(data) ? data : [];
 }
 
 export async function getAuditorAccessLog(): Promise<
