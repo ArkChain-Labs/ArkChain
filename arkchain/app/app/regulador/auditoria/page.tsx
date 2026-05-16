@@ -1,29 +1,103 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
-import { ShieldCheck, ExternalLink, ArrowRight } from "lucide-react";
+import {
+  ShieldCheck,
+  ExternalLink,
+  RefreshCw,
+} from "lucide-react";
 import { useAuditEvents } from "@/lib/hooks/use-audit";
 import { AuditorRow } from "@/components/shared/auditor-row";
 import { RiskBadge } from "@/components/shared/risk-badge";
 import { EncryptedValue } from "@/components/shared/encrypted-value";
 import { MoneyAmount } from "@/components/shared/money-amount";
-import { formatAddress, formatDateTime, formatTokens, formatMXN } from "@/lib/format";
+import { formatAddress, formatDateTime, formatMXN } from "@/lib/format";
 import { AuditEvent } from "@/lib/types";
 
-function SessionTimer() {
-  const [seconds, setSeconds] = useState(3600);
+// ── Auditor mode header ──────────────────────────────────────────────────────
+
+function SyncTimestamp() {
+  const [ts, setTs] = useState<string>("");
   useEffect(() => {
-    const id = setInterval(() => setSeconds((s) => Math.max(0, s - 1)), 1000);
+    const fmt = () =>
+      setTs(
+        new Intl.DateTimeFormat("es-MX", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false,
+        }).format(new Date())
+      );
+    fmt();
+    const id = setInterval(fmt, 30_000);
     return () => clearInterval(id);
   }, []);
-  const mm = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const ss = String(seconds % 60).padStart(2, "0");
+  return <span>{ts}</span>;
+}
+
+function AuditorModeHeader() {
   return (
-    <span className="font-mono text-xs text-danger">
-      Sesión expira en {mm}:{ss}
-    </span>
+    <div
+      className="rounded-xl border px-6 py-5"
+      style={{
+        background: "linear-gradient(135deg, #3f0a0a 0%, #7f1d1d 100%)",
+        borderColor: "#7f1d1d",
+        boxShadow: "0 1px 12px 0 rgba(127,29,29,0.25)",
+      }}
+    >
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex items-start gap-4">
+          <div
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.2)" }}
+          >
+            <ShieldCheck className="h-5 w-5 text-white" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span
+                className="inline-flex items-center gap-1.5 rounded px-3 py-1 text-xs font-black uppercase tracking-[0.15em] text-white"
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  letterSpacing: "0.12em",
+                }}
+              >
+                <span
+                  className="h-1.5 w-1.5 rounded-full animate-pulse"
+                  style={{ background: "#fca5a5" }}
+                />
+                CNBV — Modo Auditor Activo
+              </span>
+            </div>
+            <p className="mt-2 text-xs" style={{ color: "rgba(252,165,165,0.75)" }}>
+              Acceso con llave de auditor eERC20 — Todos los balances descifrados
+            </p>
+          </div>
+        </div>
+        <div className="text-right shrink-0">
+          <div className="flex items-center gap-1.5 justify-end mb-0.5">
+            <RefreshCw className="h-3 w-3" style={{ color: "rgba(252,165,165,0.5)" }} />
+            <p className="text-xs font-medium" style={{ color: "rgba(252,165,165,0.5)" }}>
+              Última sincronización
+            </p>
+          </div>
+          <p className="font-mono text-xs" style={{ color: "rgba(252,165,165,0.85)" }}>
+            <SyncTimestamp />
+          </p>
+          <p className="mt-1 text-xs" style={{ color: "rgba(252,165,165,0.4)" }}>
+            Fuji Testnet · Chain 43113
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
+
+// ── Expanded row detail ──────────────────────────────────────────────────────
 
 function ExpandedRow({ event }: { event: AuditEvent }) {
   return (
@@ -32,30 +106,39 @@ function ExpandedRow({ event }: { event: AuditEvent }) {
         <div className="grid md:grid-cols-3 gap-4 text-xs">
           <div>
             <p className="font-semibold text-foreground mb-2">Partes involucradas</p>
-            <p className="text-foreground-muted">De: <span className="text-foreground font-medium">{event.fromName}</span></p>
-            <p className="font-mono text-foreground-subtle">{event.from}</p>
-            <p className="text-foreground-muted mt-1">A: <span className="text-foreground font-medium">{event.toName}</span></p>
-            <p className="font-mono text-foreground-subtle">{event.to}</p>
+            <p className="text-foreground-muted">
+              De: <span className="text-foreground font-medium">{event.fromName}</span>
+            </p>
+            <p className="font-mono text-foreground-subtle break-all">{event.from}</p>
+            <p className="text-foreground-muted mt-1">
+              A: <span className="text-foreground font-medium">{event.toName}</span>
+            </p>
+            <p className="font-mono text-foreground-subtle break-all">{event.to}</p>
           </div>
           <div>
             <p className="font-semibold text-foreground mb-2">Reporte Wavy Node</p>
             {event.wavyAllowed ? (
               <div className="space-y-1">
-                <p className="text-success">KYC verificado</p>
-                <p className="text-success">Sin alertas AML</p>
-                <p className="text-success">Historial limpio</p>
+                <p className="text-success">✓ KYC verificado</p>
+                <p className="text-success">✓ Sin alertas AML</p>
+                <p className="text-success">✓ Historial limpio</p>
               </div>
             ) : (
               <div className="space-y-1">
-                <p className="text-danger">Actividad inusual detectada</p>
-                <p className="text-danger">Revisión manual requerida</p>
-                <p className="text-foreground-subtle">Score: {event.wavyScore}/100 — umbral mínimo: 60</p>
+                <p className="text-danger">✗ Actividad inusual detectada</p>
+                <p className="text-danger">✗ Revisión manual requerida</p>
+                <p className="text-foreground-subtle">
+                  Score: {event.wavyScore}/100 — umbral mínimo: 60
+                </p>
               </div>
             )}
           </div>
           <div>
             <p className="font-semibold text-foreground mb-2">On-chain</p>
-            <p className="text-foreground-muted">Bloque: <span className="font-mono text-foreground">{event.blockNumber.toLocaleString()}</span></p>
+            <p className="text-foreground-muted">
+              Bloque:{" "}
+              <span className="font-mono text-foreground">{event.blockNumber.toLocaleString()}</span>
+            </p>
             <a
               href={`https://testnet.snowtrace.io/tx/${event.txHash}`}
               target="_blank"
@@ -72,28 +155,26 @@ function ExpandedRow({ event }: { event: AuditEvent }) {
   );
 }
 
+// ── Main page ────────────────────────────────────────────────────────────────
+
 export default function AuditoriaPage() {
   const { data: events = [], isLoading } = useAuditEvents();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
-  const totalVol = events.filter(e => e.status === "executed").reduce((s, e) => s + e.totalMXN, 0);
-  const avgScore = events.length ? Math.round(events.reduce((s, e) => s + e.wavyScore, 0) / events.length) : 0;
-  const blocked = events.filter(e => e.status === "blocked").length;
+  const totalVol = events
+    .filter((e) => e.status === "executed")
+    .reduce((s, e) => s + e.totalMXN, 0);
+  const avgScore = events.length
+    ? Math.round(events.reduce((s, e) => s + e.wavyScore, 0) / events.length)
+    : 0;
+  const blocked = events.filter((e) => e.status === "blocked").length;
 
   return (
     <div className="max-w-6xl mx-auto space-y-5">
-      {/* Auditor banner */}
-      <div className="flex items-center justify-between rounded-lg border-l-4 border-danger bg-surface px-4 py-3">
-        <div className="flex items-center gap-2.5">
-          <ShieldCheck className="h-4 w-4 text-danger shrink-0" />
-          <span className="text-sm text-foreground-muted">
-            <strong className="text-foreground">Modo Auditor activo</strong> · Acceso registrado · IP 200.94.xx · Sesión iniciada 14:32 UTC-6
-          </span>
-        </div>
-        <SessionTimer />
-      </div>
+      {/* ── Step 1: Institutional CNBV header ── */}
+      <AuditorModeHeader />
 
-      {/* Header + filters */}
+      {/* Page title + filters row */}
       <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <h1 className="font-display text-2xl font-semibold text-foreground">
@@ -108,7 +189,7 @@ export default function AuditoriaPage() {
         </button>
       </div>
 
-      {/* Filters row */}
+      {/* Filters */}
       <div className="flex flex-wrap gap-2">
         {[
           { label: "Jurisdicción: México", active: true },
@@ -136,15 +217,15 @@ export default function AuditoriaPage() {
       {/* Stats */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Transacciones 30d", value: events.length.toString(), mono: true },
-          { label: "Volumen total", value: formatMXN(totalVol), mono: true },
-          { label: "Risk score prom.", value: `${avgScore}/100`, color: "text-success", mono: true },
-          { label: "Trades bloqueados", value: String(blocked), color: "text-danger", mono: true },
-          { label: "Plataformas activas", value: "1 (Arkangeles)", mono: false },
-        ].map(({ label, value, color, mono }) => (
+          { label: "Transacciones 90d", value: events.length.toString() },
+          { label: "Volumen total", value: formatMXN(totalVol) },
+          { label: "Risk score prom.", value: `${avgScore}/100`, color: "text-success" },
+          { label: "Trades bloqueados", value: String(blocked), color: "text-danger" },
+          { label: "Plataformas activas", value: "1 (Arkangeles)" },
+        ].map(({ label, value, color }) => (
           <div key={label} className="rounded-lg border border-border bg-surface p-4">
             <p className="text-xs text-foreground-subtle mb-1">{label}</p>
-            <p className={`text-lg font-semibold ${mono ? "font-mono tabular" : ""} ${color ?? "text-foreground"}`}>
+            <p className={`text-lg font-semibold font-mono tabular-nums ${color ?? "text-foreground"}`}>
               {value}
             </p>
           </div>
@@ -153,7 +234,9 @@ export default function AuditoriaPage() {
 
       {/* Main audit table */}
       {isLoading ? (
-        <p className="text-sm text-foreground-subtle">Cargando eventos...</p>
+        <div className="rounded-lg border border-border bg-surface p-12 text-center">
+          <p className="text-sm text-foreground-subtle">Cargando eventos...</p>
+        </div>
       ) : (
         <div className="rounded-lg border border-border overflow-hidden">
           <div className="bg-surface px-4 py-2.5 border-b border-border flex items-center justify-between">
@@ -168,88 +251,141 @@ export default function AuditoriaPage() {
             <table className="w-full text-sm min-w-[900px]">
               <thead>
                 <tr className="border-b border-border bg-surface">
-                  {["Timestamp", "De", "A", "Startup", "Tokens", "Precio MXN", "Total MXN", "Wavy", "TX Hash"].map((h) => (
-                    <th key={h} className="text-left px-4 py-3 text-xs font-medium text-foreground-subtle uppercase tracking-wide">
+                  {[
+                    "Timestamp",
+                    "De",
+                    "A",
+                    "Startup",
+                    "Tokens",
+                    "Precio MXN",
+                    "Total MXN",
+                    "Wavy",
+                    "TX Hash",
+                  ].map((h) => (
+                    <th
+                      key={h}
+                      className="text-left px-4 py-3 text-xs font-medium text-foreground-subtle uppercase tracking-wide"
+                    >
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
-                {events.map((ev) => {
-                  const blocked = ev.status === "blocked";
-                  const expanded = expandedId === ev.txHash;
-                  return (
-                    <Fragment key={ev.txHash}>
-                      <AuditorRow
-                        highlighted={blocked}
-                        className="cursor-pointer"
-                      >
-                        <td
-                          className="px-4 py-2.5 font-mono text-xs text-foreground-subtle whitespace-nowrap"
-                          onClick={() => setExpandedId(expanded ? null : ev.txHash)}
-                        >
-                          {formatDateTime(ev.timestamp)}
-                        </td>
-                        <td className="px-4 py-2.5 text-xs" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          <p className="font-medium text-foreground">{ev.fromName}</p>
-                          <p className="font-mono text-foreground-subtle">{formatAddress(ev.from)}</p>
-                        </td>
-                        <td className="px-4 py-2.5 text-xs" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          <p className="font-medium text-foreground">{ev.toName}</p>
-                          <p className="font-mono text-foreground-subtle">{formatAddress(ev.to)}</p>
-                        </td>
-                        <td className="px-4 py-2.5" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          <div className="flex items-center gap-1.5">
-                            <img src={ev.company.logoUrl} alt={ev.company.name} className="h-5 w-5 rounded" />
-                            <span className="text-xs font-medium text-foreground">{ev.company.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-2.5 font-mono tabular text-xs text-foreground" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          {formatTokens(ev.tokens)}
-                        </td>
-                        <td className="px-4 py-2.5 font-mono tabular text-xs text-foreground" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          {formatMXN(ev.pricePerTokenMXN)}
-                        </td>
-                        <td className="px-4 py-2.5" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          <MoneyAmount amount={ev.totalMXN} className="font-semibold text-xs" />
-                        </td>
-                        <td className="px-4 py-2.5" onClick={() => setExpandedId(expanded ? null : ev.txHash)}>
-                          <RiskBadge score={ev.wavyScore} />
-                        </td>
-                        <td className="px-4 py-2.5">
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs text-foreground-subtle">
-                              {ev.txHash.slice(0, 10)}…
-                            </span>
-                            <a
-                              href={`https://testnet.snowtrace.io/tx/${ev.txHash}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <ExternalLink className="h-3 w-3 text-foreground-subtle hover:text-accent transition-colors" />
-                            </a>
-                          </div>
-                        </td>
-                      </AuditorRow>
-                      {expanded && <ExpandedRow event={ev} />}
-                    </Fragment>
-                  );
-                })}
+                {events.length === 0 ? (
+                  <tr>
+                    <td colSpan={9} className="px-4 py-16 text-center">
+                      <p className="text-sm text-foreground-subtle">
+                        No hay transacciones registradas en este período.
+                      </p>
+                    </td>
+                  </tr>
+                ) : (
+                  events.map((ev) => {
+                    const isBlocked = ev.status === "blocked";
+                    const expanded = expandedId === ev.txHash;
+                    return (
+                      <Fragment key={ev.txHash}>
+                        <AuditorRow highlighted={isBlocked} className="cursor-pointer">
+                          <td
+                            className="px-4 py-2.5 font-mono text-xs text-foreground-subtle whitespace-nowrap"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            {formatDateTime(ev.timestamp)}
+                          </td>
+                          <td
+                            className="px-4 py-2.5 text-xs"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            <p className="font-medium text-foreground">{ev.fromName}</p>
+                            <p className="font-mono text-foreground-subtle">
+                              {formatAddress(ev.from)}
+                            </p>
+                          </td>
+                          <td
+                            className="px-4 py-2.5 text-xs"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            <p className="font-medium text-foreground">{ev.toName}</p>
+                            <p className="font-mono text-foreground-subtle">
+                              {formatAddress(ev.to)}
+                            </p>
+                          </td>
+                          <td
+                            className="px-4 py-2.5"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <img
+                                src={ev.company.logoUrl}
+                                alt={ev.company.name}
+                                className="h-5 w-5 rounded"
+                              />
+                              <span className="text-xs font-medium text-foreground">
+                                {ev.company.name}
+                              </span>
+                            </div>
+                          </td>
+                          <td
+                            className="px-4 py-2.5 font-mono tabular-nums text-xs text-foreground"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            {Number(ev.tokens).toLocaleString("es-MX")}
+                          </td>
+                          <td
+                            className="px-4 py-2.5 font-mono tabular-nums text-xs text-foreground"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            {formatMXN(ev.pricePerTokenMXN)}
+                          </td>
+                          <td
+                            className="px-4 py-2.5"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            <MoneyAmount amount={ev.totalMXN} className="font-semibold text-xs" />
+                          </td>
+                          <td
+                            className="px-4 py-2.5"
+                            onClick={() => setExpandedId(expanded ? null : ev.txHash)}
+                          >
+                            <RiskBadge score={ev.wavyScore} />
+                          </td>
+                          <td className="px-4 py-2.5">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-xs text-foreground-subtle">
+                                {ev.txHash.slice(0, 10)}…
+                              </span>
+                              <a
+                                href={`https://testnet.snowtrace.io/tx/${ev.txHash}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <ExternalLink className="h-3 w-3 text-foreground-subtle hover:text-accent transition-colors" />
+                              </a>
+                            </div>
+                          </td>
+                        </AuditorRow>
+                        {expanded && <ExpandedRow event={ev} />}
+                      </Fragment>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
         </div>
       )}
 
-      {/* Split view demo */}
+      {/* Comparison section */}
       <div className="rounded-lg border border-border bg-surface p-6">
-        <p className="text-xs font-medium text-foreground-subtle uppercase tracking-widest mb-1">Demo</p>
+        <p className="text-xs font-medium text-foreground-subtle uppercase tracking-widest mb-1">
+          Demo
+        </p>
         <h2 className="font-display text-lg font-semibold text-foreground mb-4">
           Privado por defecto, auditable cuando importa
         </h2>
-        <div className="grid md:grid-cols-2 gap-4 items-center">
+        <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 items-center">
           <div className="rounded-lg border border-border bg-surface-elevated p-4">
             <p className="text-xs font-medium text-foreground-subtle mb-3 flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full bg-encrypted inline-block" />
@@ -265,12 +401,10 @@ export default function AuditoriaPage() {
             </div>
           </div>
 
-          <div className="hidden md:flex justify-center">
-            <div className="flex flex-col items-center gap-1 text-foreground-subtle">
-              <div className="h-px w-12 bg-accent" />
-              <ArrowRight className="h-5 w-5 text-accent" />
-              <div className="h-px w-12 bg-accent" />
-            </div>
+          <div className="flex flex-col items-center gap-1 text-foreground-subtle px-2">
+            <div className="h-px w-8 bg-accent" />
+            <span className="text-xs text-accent font-medium whitespace-nowrap">→</span>
+            <div className="h-px w-8 bg-accent" />
           </div>
 
           <div className="rounded-lg border border-accent/30 bg-surface-elevated p-4">
@@ -283,7 +417,10 @@ export default function AuditoriaPage() {
                 { name: "FintechMX · María Pérez", amount: "$294,000 MXN" },
                 { name: "LogiPay · Juan López", amount: "$205,000 MXN" },
               ].map(({ name, amount }) => (
-                <div key={name} className="flex justify-between p-2 rounded border-l-2 border-accent bg-accent/[0.03]">
+                <div
+                  key={name}
+                  className="flex justify-between p-2 rounded border-l-2 border-accent bg-accent/[0.03]"
+                >
                   <span className="text-foreground">{name}</span>
                   <span className="font-mono text-foreground">{amount}</span>
                 </div>
