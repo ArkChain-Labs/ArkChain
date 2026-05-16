@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ShieldCheck, X } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ShieldCheck, Loader2 } from "lucide-react";
 import { useAccount } from "wagmi";
 import {
   Dialog,
@@ -28,6 +28,12 @@ export function SellModal({ holding, onClose }: Props) {
 
   const [tokens, setTokens] = useState("");
   const [price, setPrice] = useState(String(holding.company.lastTradePriceMXN));
+  const [wavyReady, setWavyReady] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setWavyReady(true), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   const tokensNum = parseInt(tokens) || 0;
   const priceNum = parseFloat(price) || 0;
@@ -96,13 +102,29 @@ export function SellModal({ holding, onClose }: Props) {
             </span>
           </div>
 
-          {/* Compliance block */}
-          <div className="rounded-lg border-l-2 border-accent bg-accent/5 p-3 flex gap-2.5">
-            <ShieldCheck className="h-4 w-4 text-accent shrink-0 mt-0.5" />
-            <p className="text-xs text-foreground-muted leading-relaxed">
-              Tu contraparte será verificada por <strong>Wavy Node</strong> antes del
-              trade. Si el risk score es inferior a 60, la transacción no se ejecuta
-              automáticamente.
+          {/* Compliance block — fades in after Wavy check (800ms) */}
+          <div
+            className="rounded-lg border-l-2 p-3 flex gap-2.5 transition-all duration-500"
+            style={{
+              borderLeftColor: wavyReady ? "var(--color-success)" : "var(--color-accent)",
+              background: wavyReady ? "rgba(117,169,78,0.06)" : "rgba(var(--color-accent),0.05)",
+            }}
+          >
+            {wavyReady ? (
+              <ShieldCheck className="h-4 w-4 text-success shrink-0 mt-0.5" />
+            ) : (
+              <Loader2 className="h-4 w-4 text-accent shrink-0 mt-0.5 animate-spin" />
+            )}
+            <p className="text-xs text-foreground-muted leading-relaxed transition-colors duration-300">
+              {wavyReady ? (
+                <>
+                  <strong className="text-success">Wavy Node listo.</strong> La contraparte
+                  será verificada al ejecutar. Score inferior a 60 bloquea la transacción
+                  automáticamente.
+                </>
+              ) : (
+                <>Conectando con <strong>Wavy Node</strong>…</>
+              )}
             </p>
           </div>
         </div>
