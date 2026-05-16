@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useWriteContract } from "wagmi";
 import { getOpenOrders, getMyOrders, createOrder, executeOrder } from "@/lib/api/orders";
 import { Address, CreateOrderInput } from "@/lib/types";
 
@@ -19,9 +20,10 @@ export function useMyOrders(address: Address | undefined) {
 
 export function useCreateOrder() {
   const qc = useQueryClient();
+  const { writeContractAsync } = useWriteContract();
   return useMutation({
     mutationFn: ({ input, seller }: { input: CreateOrderInput; seller: Address }) =>
-      createOrder(input, seller),
+      createOrder(input, seller, writeContractAsync as Parameters<typeof createOrder>[2]),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["orders"] });
       qc.invalidateQueries({ queryKey: ["my-orders"] });
