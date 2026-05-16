@@ -50,7 +50,7 @@ export async function fetchTradeEvents(
 
   const logs = await orderBook.queryFilter(filter, fromBlock, "latest");
 
-  const events: TradeEvent[] = await Promise.all(
+  const events: (TradeEvent | null)[] = await Promise.all(
     logs.map(async (log) => {
       const parsed = orderBook.interface.parseLog({
         topics: [...log.topics],
