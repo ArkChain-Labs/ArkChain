@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ShieldCheck, ExternalLink, ArrowRight, Clock } from "lucide-react";
+import { useState, useEffect, Fragment } from "react";
+import { ShieldCheck, ExternalLink, ArrowRight } from "lucide-react";
 import { useAuditEvents } from "@/lib/hooks/use-audit";
 import { AuditorRow } from "@/components/shared/auditor-row";
 import { RiskBadge } from "@/components/shared/risk-badge";
@@ -180,9 +180,8 @@ export default function AuditoriaPage() {
                   const blocked = ev.status === "blocked";
                   const expanded = expandedId === ev.txHash;
                   return (
-                    <>
+                    <Fragment key={ev.txHash}>
                       <AuditorRow
-                        key={ev.txHash}
                         highlighted={blocked}
                         className="cursor-pointer"
                       >
@@ -234,8 +233,8 @@ export default function AuditoriaPage() {
                           </div>
                         </td>
                       </AuditorRow>
-                      {expanded && <ExpandedRow key={`${ev.txHash}-expanded`} event={ev} />}
-                    </>
+                      {expanded && <ExpandedRow event={ev} />}
+                    </Fragment>
                   );
                 })}
               </tbody>
