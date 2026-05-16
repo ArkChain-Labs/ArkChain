@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useAccount } from "wagmi";
-import { ArrowUpRight, ArrowDownRight, Calendar, ShoppingCart } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, ShoppingCart } from "lucide-react";
 import { usePortfolio } from "@/lib/hooks/use-portfolio";
 import { DEFAULT_ADDRESS } from "@/lib/mocks/seed";
 import { EncryptedValue } from "@/components/shared/encrypted-value";
 import { TokenAmount } from "@/components/shared/token-amount";
 import { MoneyAmount } from "@/components/shared/money-amount";
-import { formatMXN, formatDateTime } from "@/lib/format";
+import { formatMXN, formatDate } from "@/lib/format";
+import { mockCorporateEvents } from "@/lib/mocks/seed";
 import { SellModal } from "./sell-modal";
 import { Holding } from "@/lib/types";
 
@@ -139,22 +140,22 @@ export default function PortafolioPage() {
         <div>
           <h2 className="text-sm font-semibold text-foreground mb-3">Eventos recientes</h2>
           <div className="space-y-2">
-            {[
-              { date: Date.now() - 86400000, label: "Actualización de valuación · FintechMX · $45M USD" },
-              { date: Date.now() - 15 * 86400000, label: "Dividendo Q4 2025 · FintechMX · $0.18 MXN/token" },
-              { date: Date.now() - 30 * 86400000, label: "Trade ejecutado · 200 tokens LogiPay · $82,400 MXN" },
-              { date: Date.now() - 45 * 86400000, label: "Auditoría anual completada · FintechMX · Deloitte" },
-            ].map(({ date, label }) => (
-              <div key={date} className="flex items-start gap-3 text-sm">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
-                <div className="flex-1 flex justify-between gap-4">
-                  <span className="text-foreground-muted">{label}</span>
-                  <span className="font-mono text-xs text-foreground-subtle whitespace-nowrap">
-                    {formatDateTime(date)}
-                  </span>
+            {[...mockCorporateEvents]
+              .sort((a, b) => b.date - a.date)
+              .slice(0, 4)
+              .map((ev) => (
+                <div key={ev.eventId} className="flex items-start gap-3 text-sm">
+                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent shrink-0" />
+                  <div className="flex-1 flex justify-between gap-4">
+                    <span className="text-foreground-muted">
+                      {ev.title} · {ev.companyId === "fintechmx" ? "FintechMX" : ev.companyId}
+                    </span>
+                    <span className="font-mono text-xs text-foreground-subtle whitespace-nowrap">
+                      {formatDate(ev.date)}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         </div>
       </div>
