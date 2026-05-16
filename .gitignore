@@ -47,7 +47,7 @@ contracts/node_modules/
 contracts/cache/
 contracts/artifacts/
 contracts/typechain-types/
-contracts/generated-types/
+# contracts/generated-types/ — committed because zkit verifiers has a Windows bug
 contracts/zkit/artifacts/
 contracts/coverage/
 contracts/.env
