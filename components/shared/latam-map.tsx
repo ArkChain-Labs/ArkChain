@@ -1,127 +1,157 @@
 "use client";
 
 import { useState } from "react";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
 import { cn } from "@/lib/utils";
 
-interface CountryMarker {
+const GEO_URL = "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json";
+
+// ISO 3166-1 numeric codes (zero-padded to 3 digits, matching world-atlas strings)
+const LATAM_IDS = new Set([
+  "484", // México
+  "320", // Guatemala
+  "084", // Belice
+  "340", // Honduras
+  "222", // El Salvador
+  "558", // Nicaragua
+  "188", // Costa Rica
+  "591", // Panamá
+  "192", // Cuba
+  "214", // República Dominicana
+  "630", // Puerto Rico
+  "170", // Colombia
+  "862", // Venezuela
+  "328", // Guyana
+  "254", // Guayana Francesa
+  "218", // Ecuador
+  "604", // Perú
+  "076", // Brasil
+  "068", // Bolivia
+  "152", // Chile
+  "032", // Argentina
+  "858", // Uruguay
+  "600", // Paraguay
+]);
+
+// The 6 active markets
+const ACTIVE_IDS = new Set(["484", "076", "032", "170", "152", "604"]);
+
+interface MarkerData {
   id: string;
-  cx: number;
-  cy: number;
+  coords: [number, number]; // [longitude, latitude]
   label: string;
   regulator: string;
   platform: string;
   stablecoin: string;
 }
 
-const markers: CountryMarker[] = [
-  { id: "MX", cx: 120, cy: 128, label: "México", regulator: "CNBV", platform: "Arkangeles", stablecoin: "MXNB" },
-  { id: "CO", cx: 175, cy: 230, label: "Colombia", regulator: "SFC", platform: "a2censo", stablecoin: "COPW" },
-  { id: "BR", cx: 260, cy: 265, label: "Brasil", regulator: "CVM", platform: "BEE4", stablecoin: "BRZ" },
-  { id: "PE", cx: 180, cy: 310, label: "Perú", regulator: "SMV", platform: "Crowdium", stablecoin: "PENW" },
-  { id: "CL", cx: 200, cy: 390, label: "Chile", regulator: "CMF", platform: "Broota", stablecoin: "CLPW" },
-  { id: "AR", cx: 220, cy: 420, label: "Argentina", regulator: "CNV", platform: "100 Ventures", stablecoin: "ARSW" },
+const MARKERS: MarkerData[] = [
+  { id: "484", coords: [-102, 23],  label: "México",    regulator: "CNBV", platform: "Arkangeles",   stablecoin: "MXNB" },
+  { id: "170", coords: [-74, 4],    label: "Colombia",  regulator: "SFC",  platform: "a2censo",      stablecoin: "COPW" },
+  { id: "076", coords: [-52, -14],  label: "Brasil",    regulator: "CVM",  platform: "BEE4",         stablecoin: "BRZ"  },
+  { id: "604", coords: [-76, -10],  label: "Perú",      regulator: "SMV",  platform: "Crowdium",     stablecoin: "PENW" },
+  { id: "152", coords: [-71, -35],  label: "Chile",     regulator: "CMF",  platform: "Broota",       stablecoin: "CLPW" },
+  { id: "032", coords: [-65, -34],  label: "Argentina", regulator: "CNV",  platform: "100 Ventures", stablecoin: "ARSW" },
 ];
 
 export function LatamMap({ className }: { className?: string }) {
   const [hovered, setHovered] = useState<string | null>(null);
-  const active = markers.find((m) => m.id === hovered);
+  const active = MARKERS.find((m) => m.id === hovered);
 
   return (
-    <div className={cn("relative inline-flex", className)}>
-      <svg
-        viewBox="0 0 380 520"
-        className="w-full max-w-xs"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+    <div className={cn("relative", className)}>
+      <ComposableMap
+        projection="geoMercator"
+        projectionConfig={{ center: [-70, -15], scale: 280 }}
+        width={400}
+        height={500}
+        style={{ width: "100%", maxWidth: "360px" }}
       >
-        {/* Mexico */}
-        <path
-          d="M60 80 L200 80 L210 110 L185 125 L190 145 L160 158 L130 150 L100 158 L75 140 L55 115 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
-        {/* Central America (simplified) */}
-        <path
-          d="M145 160 L175 158 L182 180 L165 192 L148 185 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.08" stroke="hsl(156,60%,15%)" strokeWidth="0.8"
-        />
-        {/* Colombia */}
-        <path
-          d="M145 195 L210 195 L220 225 L205 248 L175 252 L150 235 L138 215 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
-        {/* Venezuela/Guianas (simplified) */}
-        <path
-          d="M210 195 L290 200 L295 230 L260 235 L220 225 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.06" stroke="hsl(156,60%,15%)" strokeWidth="0.6"
-        />
-        {/* Peru */}
-        <path
-          d="M143 250 L200 252 L205 310 L185 335 L155 330 L138 300 L130 270 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
-        {/* Brazil */}
-        <path
-          d="M202 230 L295 232 L330 260 L335 320 L305 370 L265 385 L230 370 L200 350 L188 310 L200 270 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
-        {/* Bolivia/Paraguay */}
-        <path
-          d="M185 335 L230 335 L245 370 L225 385 L195 378 L180 360 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.08" stroke="hsl(156,60%,15%)" strokeWidth="0.8"
-        />
-        {/* Chile */}
-        <path
-          d="M155 335 L190 340 L195 420 L185 460 L165 462 L150 440 L148 400 L152 360 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
-        {/* Argentina */}
-        <path
-          d="M190 345 L265 350 L270 410 L255 450 L230 465 L200 460 L185 440 L185 400 Z"
-          fill="hsl(156,60%,15%)" fillOpacity="0.15" stroke="hsl(156,60%,15%)" strokeWidth="1.2"
-        />
+        <Geographies geography={GEO_URL}>
+          {({ geographies }: { geographies: any[] }) =>
+            geographies
+              .filter((geo: any) => LATAM_IDS.has(String(geo.id)))
+              .map((geo: any) => {
+                const isActive = ACTIVE_IDS.has(String(geo.id));
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onMouseEnter={() => isActive && setHovered(String(geo.id))}
+                    onMouseLeave={() => setHovered(null)}
+                    style={{
+                      default: {
+                        fill: isActive
+                          ? "hsl(156 60% 15% / 0.25)"
+                          : "hsl(44 22% 78%)",
+                        stroke: "hsl(44 22% 68%)",
+                        strokeWidth: 0.6,
+                        outline: "none",
+                      },
+                      hover: {
+                        fill: isActive
+                          ? "hsl(156 60% 15% / 0.45)"
+                          : "hsl(44 22% 78%)",
+                        stroke: "hsl(44 22% 68%)",
+                        strokeWidth: 0.6,
+                        outline: "none",
+                        cursor: isActive ? "pointer" : "default",
+                      },
+                      pressed: { outline: "none" },
+                    }}
+                  />
+                );
+              })
+          }
+        </Geographies>
 
-        {/* Markers */}
-        {markers.map((m) => (
-          <g
+        {MARKERS.map((m) => (
+          <Marker
             key={m.id}
+            coordinates={m.coords}
             onMouseEnter={() => setHovered(m.id)}
             onMouseLeave={() => setHovered(null)}
-            className="cursor-pointer"
           >
+            {/* Outer pulse ring */}
             <circle
-              cx={m.cx}
-              cy={m.cy}
-              r={hovered === m.id ? 9 : 6}
-              fill="hsl(28,58%,41%)"
-              opacity={hovered === m.id ? 1 : 0.75}
-              className="transition-all duration-150"
-            />
-            <circle
-              cx={m.cx}
-              cy={m.cy}
               r={hovered === m.id ? 14 : 10}
-              fill="hsl(28,58%,41%)"
-              opacity={0.15}
-              className="transition-all duration-150"
+              fill="hsl(28 58% 41%)"
+              fillOpacity={0.15}
+              style={{ transition: "r 150ms ease" }}
             />
+            {/* Inner dot */}
+            <circle
+              r={hovered === m.id ? 7 : 5}
+              fill="hsl(28 58% 41%)"
+              fillOpacity={hovered === m.id ? 1 : 0.8}
+              style={{ transition: "r 150ms ease" }}
+            />
+            {/* Label */}
             <text
-              x={m.cx + 12}
-              y={m.cy + 4}
-              fill="hsl(24,25%,9%)"
-              fontSize="9"
-              fontFamily="var(--font-inter)"
-              fontWeight="500"
+              textAnchor="middle"
+              y={-14}
+              style={{
+                fontSize: "8px",
+                fontFamily: "var(--font-inter)",
+                fontWeight: 600,
+                fill: "hsl(24 25% 9%)",
+                pointerEvents: "none",
+                opacity: hovered === m.id ? 1 : 0,
+                transition: "opacity 150ms ease",
+              }}
             >
-              {m.id}
+              {m.label}
             </text>
-          </g>
+          </Marker>
         ))}
-      </svg>
+      </ComposableMap>
 
       {/* Tooltip */}
       {active && (
         <div className="absolute left-full top-1/2 ml-4 -translate-y-1/2 w-52 rounded-lg border border-border bg-surface-elevated shadow-sm p-3 pointer-events-none z-10">
-          <p className="font-display text-sm font-semibold text-foreground mb-2">{active.label}</p>
+          <p className="font-display text-sm font-semibold text-foreground mb-2">
+            {active.label}
+          </p>
           <div className="space-y-1 text-xs">
             <div className="flex justify-between">
               <span className="text-foreground-subtle">Regulador</span>
