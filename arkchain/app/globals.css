@@ -1,0 +1,102 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+:root {
+  --background: hsl(41, 35%, 93%);
+  --foreground: hsl(24, 25%, 9%);
+  --foreground-muted: hsl(28, 14%, 31%);
+  --foreground-subtle: hsl(30, 14%, 49%);
+
+  --surface: hsl(42, 47%, 96%);
+  --surface-elevated: hsl(0, 0%, 100%);
+
+  --primary: hsl(156, 60%, 15%);
+  --primary-hover: hsl(153, 56%, 21%);
+  --primary-foreground: hsl(41, 35%, 93%);
+
+  --accent-color: hsl(28, 58%, 41%);
+  --accent-hover: hsl(26, 60%, 34%);
+  --accent-foreground: hsl(41, 35%, 93%);
+
+  --border: hsl(44, 22%, 78%);
+  --border-strong: hsl(41, 16%, 64%);
+  --input: hsl(44, 22%, 78%);
+  --ring: hsl(28, 58%, 41%);
+
+  --success: hsl(75, 49%, 33%);
+  --warning: hsl(41, 73%, 43%);
+  --danger: hsl(14, 70%, 39%);
+  --encrypted: hsl(198, 13%, 28%);
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface-elevated);
+  --popover-foreground: var(--foreground);
+  --secondary: var(--surface);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface);
+  --muted-foreground: var(--foreground-muted);
+  --destructive: var(--danger);
+  --destructive-foreground: var(--primary-foreground);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-foreground-subtle: var(--foreground-subtle);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent-color);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-encrypted: var(--encrypted);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+  }
+}
+
+.font-display {
+  font-family: var(--font-fraunces), Georgia, serif;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
