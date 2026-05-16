@@ -4,7 +4,7 @@ import { join } from "path";
 import type { TradeEvent } from "../types";
 
 const addresses = JSON.parse(
-  readFileSync(join(__dirname, "../../../addresses.json"), "utf8")
+  readFileSync(join(process.cwd(), "addresses.json"), "utf8")
 );
 
 const ORDER_BOOK_ABI = [
