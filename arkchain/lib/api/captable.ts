@@ -1,5 +1,6 @@
 import { CapTableEntry, CorporateEvent, Company } from "@/lib/types";
 import { mockCapTable, mockCorporateEvents } from "@/lib/mocks/seed";
+import { COMPANY_STATS } from "@/lib/mocks/seed-data";
 import { mockCompanies } from "@/lib/mocks/companies";
 import { formatAddress } from "@/lib/format";
 import {
@@ -85,11 +86,12 @@ export async function getCompanyStats(companyId: string): Promise<{
   if (USE_MOCK) {
     await new Promise((r) => setTimeout(r, 100));
     const company = mockCompanies.find((c) => c.id === companyId);
+    const stats = COMPANY_STATS[companyId];
     return {
       totalSupply: company?.totalSupply ?? BigInt(1_000_000),
-      activeHolders: 87,
-      volume30dMXN: 1_240_000,
-      avgPriceMonthMXN: company?.lastTradePriceMXN ?? 245,
+      activeHolders: stats?.activeHolders ?? 87,
+      volume30dMXN: stats?.volume30dMXN ?? 1_240_000,
+      avgPriceMonthMXN: stats?.avgPriceMonthMXN ?? company?.lastTradePriceMXN ?? 245,
     };
   }
   const res = await fetch(`/api/companies/${companyId}/stats`);

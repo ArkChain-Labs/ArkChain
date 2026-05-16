@@ -1,5 +1,5 @@
 import { Address, AuditEvent, CapTableEntry, CorporateEvent, Holding, Order } from "@/lib/types";
-import { mockCompanies, getCompany } from "./companies";
+import { mockCompanies } from "./companies";
 
 export { mockCompanies };
 
@@ -144,13 +144,18 @@ export const mockOrders: Order[] = [
   },
 ];
 
-// Cap table for FintechMX
+// Cap table for FintechMX — expanded to reflect realistic distribution across
+// founders, institutional VCs, retail investors, reserve and treasury.
 export const mockCapTable: CapTableEntry[] = [
-  { holder: mockInvestors[0].address, holderName: "Equipo Fundador", category: "founder", tokens: BigInt(350_000), pctOwnership: 35 },
-  { holder: mockInvestors[1].address, holderName: "DILA Capital", category: "vc", tokens: BigInt(200_000), pctOwnership: 20 },
-  { holder: mockInvestors[2].address, holderName: "Arkangeles Pool A", category: "retail", tokens: BigInt(180_000), pctOwnership: 18 },
-  { holder: mockInvestors[3].address, holderName: "Reserva Estratégica", category: "reserve", tokens: BigInt(150_000), pctOwnership: 15 },
-  { holder: mockInvestors[4].address, holderName: "Treasury", category: "treasury", tokens: BigInt(120_000), pctOwnership: 12 },
+  { holder: mockInvestors[0].address,  holderName: "Equipo Fundador",         category: "founder",  tokens: BigInt(350_000), pctOwnership: 35 },
+  { holder: mockInvestors[1].address,  holderName: "DILA Capital",            category: "vc",       tokens: BigInt(130_000), pctOwnership: 13 },
+  { holder: mockInvestors[2].address,  holderName: "GBM Asset Management",    category: "vc",       tokens: BigInt(70_000),  pctOwnership:  7 },
+  { holder: mockInvestors[3].address,  holderName: "Arkangeles Pool A",       category: "retail",   tokens: BigInt(80_000),  pctOwnership:  8 },
+  { holder: mockInvestors[4].address,  holderName: "María Pérez García",      category: "retail",   tokens: BigInt(20_000),  pctOwnership:  2 },
+  { holder: mockInvestors[5].address,  holderName: "Carlos Hernández Torres", category: "retail",   tokens: BigInt(20_000),  pctOwnership:  2 },
+  { holder: mockInvestors[6].address,  holderName: "Valentina Cruz Medina",   category: "retail",   tokens: BigInt(10_000),  pctOwnership:  1 },
+  { holder: mockInvestors[7].address,  holderName: "Reserva Estratégica",     category: "reserve",  tokens: BigInt(140_000), pctOwnership: 14 },
+  { holder: mockInvestors[8].address,  holderName: "Treasury",                category: "treasury", tokens: BigInt(180_000), pctOwnership: 18 },
 ];
 
 // Corporate events for FintechMX
