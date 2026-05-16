@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useCapTable, useCorporateEvents, useCompanyStats } from "@/lib/hooks/use-captable";
 import { useOrders } from "@/lib/hooks/use-orders";
 import { formatTokens, formatMXN, formatDate } from "@/lib/format";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
 import { MoneyAmount } from "@/components/shared/money-amount";
-import { Building2, Plus } from "lucide-react";
+import { Building2, Plus, Users } from "lucide-react";
+
 
 const COMPANY_ID = "fintechmx";
 
@@ -22,7 +21,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 const CATEGORY_LABELS: Record<string, string> = {
   founder: "Fundadores",
   vc: "VC Institucional",
-  retail: "Minoristas (Arkangeles)",
+  retail: "Minoristas",
   reserve: "Reserva",
   treasury: "Treasury",
 };
@@ -43,6 +42,13 @@ export default function CapTablePage() {
   const { data: events = [] } = useCorporateEvents(COMPANY_ID);
   const { data: stats } = useCompanyStats(COMPANY_ID);
   const { data: trades = [] } = useOrders(COMPANY_ID);
+
+  // Aggregate percentages per category for the legend (avoids 14 "Minoristas" duplicates)
+  const categoryTotals = capTable.reduce<Record<string, number>>((acc, e) => {
+    acc[e.category] = (acc[e.category] ?? 0) + e.pctOwnership;
+    return acc;
+  }, {});
+  const uniqueCategories = Object.entries(categoryTotals) as [string, number][];
 
   return (
     <div className="max-w-5xl mx-auto space-y-5">
@@ -96,52 +102,95 @@ export default function CapTablePage() {
         </div>
       </div>
 
-      {/* Cap table visualization */}
-      <div className="grid md:grid-cols-5 gap-4">
-        {/* Stacked bar chart (60%) */}
-        <div className="md:col-span-3 rounded-lg border border-border bg-surface p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-4">Distribución de tokens</h2>
-          <div className="flex h-10 rounded-md overflow-hidden mb-4">
-            {capTable.map((entry) => (
-              <div
-                key={entry.holder}
-                className={`${CATEGORY_COLORS[entry.category]} transition-all hover:opacity-80`}
-                style={{ width: `${entry.pctOwnership}%` }}
-                title={`${CATEGORY_LABELS[entry.category]}: ${entry.pctOwnership}%`}
-              />
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-x-4 gap-y-2">
-            {capTable.map((entry) => (
-              <div key={entry.holder} className="flex items-center gap-1.5 text-xs">
-                <span className={`h-2.5 w-2.5 rounded-sm ${CATEGORY_COLORS[entry.category]}`} />
-                <span className="text-foreground-muted">{CATEGORY_LABELS[entry.category]}</span>
-                <span className="font-mono text-foreground">{entry.pctOwnership}%</span>
-              </div>
-            ))}
-          </div>
+      {/* Distribution bar */}
+      <div className="rounded-lg border border-border bg-surface p-5">
+        <h2 className="text-sm font-semibold text-foreground mb-4">Distribución de tokens</h2>
+        {/* Stacked bar — one segment per entry (small retail slivers visible on hover) */}
+        <div className="flex h-10 rounded-md overflow-hidden mb-4">
+          {capTable.map((entry) => (
+            <div
+              key={entry.holder}
+              className={`${CATEGORY_COLORS[entry.category]} transition-all hover:opacity-75`}
+              style={{ width: `${entry.pctOwnership}%` }}
+              title={`${entry.holderName}: ${entry.pctOwnership}%`}
+            />
+          ))}
         </div>
+        {/* Legend — deduplicated by category with aggregate % */}
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
+          {uniqueCategories.map(([cat, total]) => (
+            <div key={cat} className="flex items-center gap-1.5 text-xs">
+              <span className={`h-2.5 w-2.5 rounded-sm ${CATEGORY_COLORS[cat]}`} />
+              <span className="text-foreground-muted">{CATEGORY_LABELS[cat]}</span>
+              <span className="font-mono text-foreground">{total.toFixed(1)}%</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
-        {/* Top holders list (40%) */}
-        <div className="md:col-span-2 rounded-lg border border-border bg-surface p-5">
-          <h2 className="text-sm font-semibold text-foreground mb-4">Top holders</h2>
-          <div className="space-y-2">
-            {capTable.map((entry) => (
-              <div key={entry.holder} className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 min-w-0">
-                  <Building2 className="h-3 w-3 text-foreground-subtle shrink-0" />
-                  <span className="text-foreground truncate">{entry.holderName}</span>
-                </div>
-                <div className="flex items-center gap-2 shrink-0 ml-2">
-                  <span className="font-mono text-foreground-subtle">{formatTokens(entry.tokens)}</span>
-                  <span className="font-mono font-semibold text-foreground w-10 text-right">{entry.pctOwnership}%</span>
-                </div>
-              </div>
-            ))}
+      {/* Full investor table */}
+      <div className="rounded-lg border border-border overflow-hidden">
+        <div className="bg-surface px-5 py-3 border-b border-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Users className="h-3.5 w-3.5 text-foreground-subtle" />
+            <p className="text-sm font-semibold text-foreground">
+              Todos los inversionistas
+            </p>
           </div>
-          <button className="mt-3 text-xs text-accent hover:underline">
-            Ver los {stats?.activeHolders ?? 87} holders →
-          </button>
+          <span className="text-xs text-foreground-subtle font-mono">
+            {capTable.length} registrados
+          </span>
+        </div>
+        <div className="overflow-y-auto" style={{ maxHeight: 360 }}>
+          <table className="w-full text-xs">
+            <thead className="sticky top-0 bg-surface border-b border-border">
+              <tr>
+                <th className="text-left px-5 py-2.5 font-semibold text-foreground-subtle uppercase tracking-wider">#</th>
+                <th className="text-left px-5 py-2.5 font-semibold text-foreground-subtle uppercase tracking-wider">Nombre</th>
+                <th className="text-left px-5 py-2.5 font-semibold text-foreground-subtle uppercase tracking-wider">Categoría</th>
+                <th className="text-right px-5 py-2.5 font-semibold text-foreground-subtle uppercase tracking-wider">Tokens</th>
+                <th className="text-right px-5 py-2.5 font-semibold text-foreground-subtle uppercase tracking-wider">%</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-border">
+              {capTable.map((entry, idx) => (
+                <tr
+                  key={entry.holder}
+                  className={`hover:bg-surface transition-colors ${idx % 2 === 0 ? "bg-surface-elevated" : "bg-surface"}`}
+                >
+                  <td className="px-5 py-2.5 font-mono text-foreground-subtle">{idx + 1}</td>
+                  <td className="px-5 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <Building2 className="h-3 w-3 text-foreground-subtle shrink-0" />
+                      <span className="text-foreground font-medium">{entry.holderName}</span>
+                    </div>
+                    <p className="font-mono text-foreground-subtle text-[10px] mt-0.5 ml-5">
+                      {entry.holder.slice(0, 8)}…{entry.holder.slice(-6)}
+                    </p>
+                  </td>
+                  <td className="px-5 py-2.5">
+                    <span
+                      className={`inline-flex items-center rounded-sm px-2 py-0.5 text-[10px] font-medium ${
+                        entry.category === "founder" ? "bg-primary/10 text-primary" :
+                        entry.category === "vc"      ? "bg-accent/10 text-accent" :
+                        entry.category === "retail"  ? "bg-success/10 text-success" :
+                        entry.category === "reserve" ? "bg-warning/10 text-warning" :
+                                                       "bg-encrypted/10 text-encrypted"
+                      }`}
+                    >
+                      {CATEGORY_LABELS[entry.category]}
+                    </span>
+                  </td>
+                  <td className="px-5 py-2.5 text-right font-mono tabular text-foreground">
+                    {formatTokens(entry.tokens)}
+                  </td>
+                  <td className="px-5 py-2.5 text-right font-mono font-semibold text-foreground">
+                    {entry.pctOwnership}%
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 

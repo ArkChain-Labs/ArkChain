@@ -144,18 +144,33 @@ export const mockOrders: Order[] = [
   },
 ];
 
-// Cap table for FintechMX — expanded to reflect realistic distribution across
-// founders, institutional VCs, retail investors, reserve and treasury.
+// Cap table for FintechMX — 20 entries covering all investor categories.
+// Founders + 2 VCs + Arkangeles pool + 14 individual retail investors + reserve + treasury.
+// Total: 1,000,000 tokens = 100%.
 export const mockCapTable: CapTableEntry[] = [
-  { holder: mockInvestors[0].address,  holderName: "Equipo Fundador",         category: "founder",  tokens: BigInt(350_000), pctOwnership: 35 },
-  { holder: mockInvestors[1].address,  holderName: "DILA Capital",            category: "vc",       tokens: BigInt(130_000), pctOwnership: 13 },
-  { holder: mockInvestors[2].address,  holderName: "GBM Asset Management",    category: "vc",       tokens: BigInt(70_000),  pctOwnership:  7 },
-  { holder: mockInvestors[3].address,  holderName: "Arkangeles Pool A",       category: "retail",   tokens: BigInt(80_000),  pctOwnership:  8 },
-  { holder: mockInvestors[4].address,  holderName: "María Pérez García",      category: "retail",   tokens: BigInt(20_000),  pctOwnership:  2 },
-  { holder: mockInvestors[5].address,  holderName: "Carlos Hernández Torres", category: "retail",   tokens: BigInt(20_000),  pctOwnership:  2 },
-  { holder: mockInvestors[6].address,  holderName: "Valentina Cruz Medina",   category: "retail",   tokens: BigInt(10_000),  pctOwnership:  1 },
-  { holder: mockInvestors[7].address,  holderName: "Reserva Estratégica",     category: "reserve",  tokens: BigInt(140_000), pctOwnership: 14 },
-  { holder: mockInvestors[8].address,  holderName: "Treasury",                category: "treasury", tokens: BigInt(180_000), pctOwnership: 18 },
+  // ── Institutional ─────────────────────────────────────────────────────────
+  { holder: mockInvestors[14].address, holderName: "Equipo Fundador",           category: "founder",  tokens: BigInt(300_000), pctOwnership: 30   },
+  { holder: mockInvestors[15].address, holderName: "DILA Capital",              category: "vc",       tokens: BigInt(100_000), pctOwnership: 10   },
+  { holder: mockInvestors[16].address, holderName: "GBM Asset Management",      category: "vc",       tokens: BigInt( 50_000), pctOwnership:  5   },
+  { holder: mockInvestors[17].address, holderName: "Arkangeles Pool A",         category: "retail",   tokens: BigInt( 50_000), pctOwnership:  5   },
+  // ── Retail individual ─────────────────────────────────────────────────────
+  { holder: mockInvestors[ 0].address, holderName: "María Pérez García",        category: "retail",   tokens: BigInt( 20_000), pctOwnership:  2   },
+  { holder: mockInvestors[ 1].address, holderName: "Juan López Martínez",       category: "retail",   tokens: BigInt( 20_000), pctOwnership:  2   },
+  { holder: mockInvestors[ 2].address, holderName: "Ana González Ruiz",         category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 3].address, holderName: "Carlos Hernández Torres",   category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 4].address, holderName: "Laura Rodríguez Sánchez",   category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 5].address, holderName: "Roberto Ramírez Flores",    category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 6].address, holderName: "Sofía Morales Jiménez",     category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 7].address, holderName: "Diego Vargas Castillo",     category: "retail",   tokens: BigInt( 15_000), pctOwnership:  1.5 },
+  { holder: mockInvestors[ 8].address, holderName: "Valentina Cruz Medina",     category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  { holder: mockInvestors[ 9].address, holderName: "Alejandro Ortiz Reyes",     category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  { holder: mockInvestors[10].address, holderName: "Camila Mendoza Vega",       category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  { holder: mockInvestors[11].address, holderName: "Fernando Gutiérrez Luna",   category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  { holder: mockInvestors[12].address, holderName: "Isabella Torres Núñez",     category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  { holder: mockInvestors[13].address, holderName: "Marcos Ávila Serrano",      category: "retail",   tokens: BigInt( 10_000), pctOwnership:  1   },
+  // ── Reserve & treasury ────────────────────────────────────────────────────
+  { holder: mockInvestors[18].address, holderName: "Reserva Estratégica",       category: "reserve",  tokens: BigInt(100_000), pctOwnership: 10   },
+  { holder: mockInvestors[19].address, holderName: "Treasury",                  category: "treasury", tokens: BigInt(210_000), pctOwnership: 21   },
 ];
 
 // Corporate events for FintechMX
