@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, ShoppingCart, LayoutGrid, ShieldCheck, FileText, Wallet } from "lucide-react";
+import { BarChart3, ShoppingCart, LayoutGrid, ShieldCheck, FileText, Wallet, Sun, Moon } from "lucide-react";
 import { useAccount } from "wagmi";
 import { ProfileSwitcher } from "./profile-switcher";
 import { useUserRole } from "@/lib/store/user-role";
+import { useTheme } from "@/lib/store/theme";
 import { cn } from "@/lib/utils";
 import { formatAddress } from "@/lib/format";
 
@@ -28,6 +29,7 @@ export function Sidebar() {
   const pathname = usePathname();
   const { role } = useUserRole();
   const { address, isConnected } = useAccount();
+  const { dark, toggle } = useTheme();
   const nav = navByRole[role];
 
   return (
@@ -71,6 +73,17 @@ export function Sidebar() {
           );
         })}
       </nav>
+
+      {/* Theme toggle */}
+      <div className="px-2.5 py-2 border-t border-border">
+        <button
+          onClick={toggle}
+          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-foreground-muted hover:bg-surface hover:text-foreground transition-colors"
+        >
+          {dark ? <Sun className="h-4 w-4 shrink-0" /> : <Moon className="h-4 w-4 shrink-0" />}
+          {dark ? "Modo claro" : "Modo oscuro"}
+        </button>
+      </div>
 
       {/* Wallet */}
       <div className="p-2.5 border-t border-border">

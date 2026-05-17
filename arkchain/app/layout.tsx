@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Fraunces, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/providers/providers";
+import { ThemeInit } from "@/components/shared/theme-init";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,7 +40,10 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${jbMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
-        <Providers>{children}</Providers>
+        <Providers>
+          <ThemeInit />
+          {children}
+        </Providers>
       </body>
     </html>
   );

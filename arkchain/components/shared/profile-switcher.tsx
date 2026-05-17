@@ -26,15 +26,15 @@ export function ProfileSwitcher() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-primary-hover/20 transition-colors outline-none">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-primary-foreground/15">
-          <Icon className="h-3.5 w-3.5 text-primary-foreground" />
+      <DropdownMenuTrigger className="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm hover:bg-surface transition-colors outline-none">
+        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-surface border border-border">
+          <Icon className="h-3.5 w-3.5 text-foreground" />
         </div>
         <div className="flex-1 min-w-0 text-left">
-          <p className="font-medium text-primary-foreground text-xs leading-tight truncate">{current.label}</p>
-          <p className="text-primary-foreground/60 text-[10px] leading-tight truncate">{current.sublabel}</p>
+          <p className="font-medium text-foreground text-xs leading-tight truncate">{current.label}</p>
+          <p className="text-foreground-subtle text-[10px] leading-tight truncate">{current.sublabel}</p>
         </div>
-        <ChevronDown className="h-3.5 w-3.5 text-primary-foreground/60 shrink-0" />
+        <ChevronDown className="h-3.5 w-3.5 text-foreground-subtle shrink-0" />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="start" className="w-52 bg-surface-elevated border-border">
         {roles.map((r) => {

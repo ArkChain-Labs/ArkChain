@@ -40,6 +40,34 @@
   --destructive-foreground: var(--primary-foreground);
 }
 
+.dark {
+  --background: hsl(0, 0%, 8%);
+  --foreground: hsl(0, 0%, 94%);
+  --foreground-muted: hsl(0, 0%, 62%);
+  --foreground-subtle: hsl(0, 0%, 44%);
+
+  --surface: hsl(0, 0%, 12%);
+  --surface-elevated: hsl(0, 0%, 15%);
+
+  --primary: hsl(0, 0%, 94%);
+  --primary-hover: hsl(0, 0%, 82%);
+  --primary-foreground: hsl(0, 0%, 8%);
+
+  --accent-color: hsl(43, 70%, 52%);
+  --accent-hover: hsl(43, 70%, 44%);
+  --accent-foreground: hsl(0, 0%, 8%);
+
+  --border: hsl(0, 0%, 18%);
+  --border-strong: hsl(0, 0%, 28%);
+  --input: hsl(0, 0%, 18%);
+  --ring: hsl(0, 0%, 94%);
+
+  --success: hsl(142, 45%, 40%);
+  --warning: hsl(43, 73%, 52%);
+  --danger: hsl(0, 65%, 52%);
+  --encrypted: hsl(0, 0%, 55%);
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
