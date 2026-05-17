@@ -25,18 +25,12 @@ export function Header() {
   }
 
   return (
-    <header className="flex h-14 items-center justify-between border-b border-border bg-surface px-6">
-      <nav className="flex items-center gap-1.5 text-sm">
+    <header className="flex h-12 items-center justify-between border-b border-border bg-background px-6">
+      <nav className="flex items-center gap-1 text-sm">
         {crumbs.map((crumb, i) => (
-          <span key={crumb} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-foreground-subtle" />}
-            <span
-              className={
-                i === crumbs.length - 1
-                  ? "font-medium text-foreground"
-                  : "text-foreground-subtle"
-              }
-            >
+          <span key={crumb} className="flex items-center gap-1">
+            {i > 0 && <ChevronRight className="h-3 w-3 text-foreground-subtle" />}
+            <span className={i === crumbs.length - 1 ? "font-medium text-foreground" : "text-foreground-subtle"}>
               {crumb}
             </span>
           </span>
@@ -52,9 +46,9 @@ export function Header() {
         <button
           onClick={handleDisconnect}
           title="Desconectar wallet"
-          className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground-muted hover:border-destructive hover:text-destructive transition-colors"
+          className="flex items-center gap-1.5 rounded border border-border px-2.5 py-1 text-xs text-foreground-muted hover:border-danger hover:text-danger transition-colors"
         >
-          <LogOut className="h-3.5 w-3.5" />
+          <LogOut className="h-3 w-3" />
           Salir
         </button>
       </div>

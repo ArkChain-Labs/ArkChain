@@ -6,36 +6,27 @@ const techs = ["Avalanche L1", "eERC20", "ICM (Interchain Messaging)", "Wavy Nod
 
 export function TechCredibility() {
   return (
-    <section className="py-12 px-6 border-b border-border bg-surface">
+    <section className="py-10 px-6 border-b border-border">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4"
+          className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.08 } },
-          }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.07 } } }}
         >
           <motion.p
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { duration: 0.4 } },
-            }}
-            className="text-xs font-medium text-foreground-subtle tracking-widest uppercase"
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.4 } } }}
+            className="text-[11px] tracking-[0.15em] text-foreground-subtle uppercase"
           >
             Construido sobre
           </motion.p>
           {techs.map((t) => (
             <motion.div
               key={t}
-              variants={{
-                hidden: { opacity: 0, y: 8 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-              }}
-              whileHover={{ scale: 1.04, opacity: 1 }}
-              className="rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground-muted opacity-60 hover:opacity-100 hover:border-primary/30 transition-all cursor-default"
+              variants={{ hidden: { opacity: 0, y: 6 }, visible: { opacity: 1, y: 0, transition: { duration: 0.35 } } }}
+              whileHover={{ scale: 1.03 }}
+              className="rounded border border-border px-3.5 py-1.5 text-xs font-medium text-foreground-muted opacity-50 hover:opacity-100 hover:border-border-strong hover:text-foreground transition-all cursor-default"
             >
               {t}
             </motion.div>

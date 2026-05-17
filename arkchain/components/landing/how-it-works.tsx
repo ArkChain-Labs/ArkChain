@@ -14,52 +14,45 @@ export function HowItWorks() {
     <section id="como-funciona" className="py-20 px-6 border-t border-border">
       <div className="max-w-5xl mx-auto">
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="text-xs font-medium tracking-widest text-foreground-subtle uppercase mb-3"
+          className="text-[11px] tracking-[0.18em] text-foreground-subtle uppercase mb-3"
         >
           Cómo funciona
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.05 }}
-          className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-14 max-w-lg"
+          transition={{ duration: 0.45, delay: 0.06 }}
+          className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-14 max-w-md leading-tight"
         >
           Cuatro pasos. Una infraestructura.
         </motion.h2>
 
         <div className="relative">
-          {/* Connector line */}
-          <div className="absolute top-5 left-8 right-8 h-px bg-border hidden md:block" />
+          <div className="absolute top-5 left-5 right-5 h-px bg-border hidden md:block" />
 
           <motion.div
             className="grid md:grid-cols-4 gap-8"
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-64px" }}
-            variants={{
-              hidden: {},
-              visible: { transition: { staggerChildren: 0.13 } },
-            }}
+            viewport={{ once: true, margin: "-40px" }}
+            variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.11 } } }}
           >
             {steps.map(({ num, title, body }) => (
               <motion.div
                 key={num}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-                }}
+                variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: { duration: 0.48 } } }}
                 className="relative"
               >
-                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-accent/40 bg-surface mb-4 shadow-sm">
-                  <span className="font-display text-sm font-semibold text-accent">{num}</span>
+                <div className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full bg-foreground mb-5">
+                  <span className="font-mono text-xs font-semibold text-background">{num}</span>
                 </div>
-                <h3 className="font-display text-base font-semibold text-foreground mb-2">{title}</h3>
-                <p className="text-sm text-foreground-muted leading-relaxed">{body}</p>
+                <h3 className="text-sm font-semibold text-foreground mb-2">{title}</h3>
+                <p className="text-sm text-foreground-muted leading-[1.7]">{body}</p>
               </motion.div>
             ))}
           </motion.div>

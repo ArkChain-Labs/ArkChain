@@ -8,8 +8,7 @@ const views = [
     role: "Inversionista",
     icon: Lock,
     iconColor: "text-encrypted",
-    iconBg: "bg-encrypted/10",
-    accent: "border-t-encrypted",
+    topBorder: "border-t-encrypted",
     rows: [
       { label: "FintechMX", value: "••••  MXN", blur: true, auditor: false },
       { label: "LogiPay", value: "••••  MXN", blur: true, auditor: false },
@@ -21,8 +20,7 @@ const views = [
     role: "Emisor",
     icon: BarChart2,
     iconColor: "text-accent",
-    iconBg: "bg-accent/10",
-    accent: "border-t-accent",
+    topBorder: "border-t-accent",
     rows: [
       { label: "Fundadores", value: "35%", blur: false, auditor: false },
       { label: "VC Institucional", value: "20%", blur: false, auditor: false },
@@ -34,8 +32,7 @@ const views = [
     role: "Regulador (CNBV)",
     icon: ShieldCheck,
     iconColor: "text-danger",
-    iconBg: "bg-danger/10",
-    accent: "border-t-danger",
+    topBorder: "border-t-danger",
     rows: [
       { label: "María Pérez García", value: "$294,000 MXN", blur: false, auditor: true },
       { label: "Juan López Martínez", value: "$205,000 MXN", blur: false, auditor: true },
@@ -47,75 +44,69 @@ const views = [
 
 export function ThreeViews() {
   return (
-    <section className="py-20 px-6 bg-surface">
+    <section className="py-20 px-6 border-t border-border bg-surface">
       <div className="max-w-5xl mx-auto">
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="text-xs font-medium tracking-widest text-foreground-subtle uppercase mb-3"
+          className="text-[11px] tracking-[0.18em] text-foreground-subtle uppercase mb-3"
         >
           Una blockchain, tres vistas
         </motion.p>
         <motion.h2
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.05 }}
-          className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-12 max-w-lg"
+          transition={{ duration: 0.45, delay: 0.06 }}
+          className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-12 max-w-lg leading-tight"
         >
           La misma información. El acceso correcto para cada rol.
         </motion.h2>
+
         <motion.div
-          className="grid md:grid-cols-3 gap-4"
+          className="grid md:grid-cols-3 gap-3"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-64px" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.12 } },
-          }}
+          viewport={{ once: true, margin: "-40px" }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.1 } } }}
         >
-          {views.map(({ role, icon: Icon, iconColor, iconBg, accent, rows, caption }) => (
+          {views.map(({ role, icon: Icon, iconColor, topBorder, rows, caption }) => (
             <motion.div
               key={role}
-              variants={{
-                hidden: { opacity: 0, y: 24 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-              }}
-              whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(26, 54, 93, 0.10)" }}
-              transition={{ duration: 0.2 }}
-              className={`rounded-lg border border-border bg-surface-elevated overflow-hidden border-t-2 ${accent} cursor-default`}
+              variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } }}
+              whileHover={{ y: -3 }}
+              transition={{ duration: 0.18 }}
+              className={`rounded-lg border border-border bg-background overflow-hidden border-t-2 ${topBorder}`}
             >
-              {/* Browser chrome */}
               <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border bg-surface">
-                <span className="h-2 w-2 rounded-full bg-border-strong" />
-                <span className="h-2 w-2 rounded-full bg-border-strong" />
-                <span className="h-2 w-2 rounded-full bg-border-strong" />
+                <span className="h-[7px] w-[7px] rounded-full bg-border-strong" />
+                <span className="h-[7px] w-[7px] rounded-full bg-border-strong" />
+                <span className="h-[7px] w-[7px] rounded-full bg-border-strong" />
                 <span className="ml-2 text-[10px] font-mono text-foreground-subtle">arkchain.io/app</span>
               </div>
               <div className="p-4">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${iconBg} mb-3`}>
-                  <Icon className={`h-4 w-4 ${iconColor}`} />
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
+                  <p className="text-xs font-medium text-foreground">{role}</p>
                 </div>
-                <p className="font-medium text-sm text-foreground mb-3">{role}</p>
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {rows.map((row) => (
                     <div
                       key={row.label}
-                      className={`flex justify-between items-center text-xs rounded px-2 py-1 ${
+                      className={`flex justify-between items-center text-xs rounded px-2 py-1.5 ${
                         row.auditor ? "bg-danger/5 border-l-2 border-danger" : "bg-surface"
                       }`}
                     >
                       <span className="text-foreground-muted">{row.label}</span>
-                      <span className={`font-mono ${row.blur ? "text-encrypted" : "text-foreground"}`}>
+                      <span className={`font-mono text-[11px] ${row.blur ? "text-encrypted" : "text-foreground"}`}>
                         {row.value}
                       </span>
                     </div>
                   ))}
                 </div>
-                <p className="mt-3 text-[10px] text-foreground-subtle">{caption}</p>
+                <p className="mt-3 text-[10px] text-foreground-subtle leading-relaxed">{caption}</p>
               </div>
             </motion.div>
           ))}

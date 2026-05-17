@@ -26,45 +26,38 @@ export function ProblemSection() {
     <section className="py-20 px-6 border-t border-border">
       <div className="max-w-5xl mx-auto">
         <motion.p
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4 }}
-          className="text-xs font-medium tracking-widest text-foreground-subtle uppercase mb-12"
+          className="text-[11px] tracking-[0.18em] text-foreground-subtle uppercase mb-14"
         >
           El problema
         </motion.p>
-        <motion.div
-          className="grid md:grid-cols-3 gap-0 divide-y md:divide-y-0 md:divide-x divide-border"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-64px" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.12 } },
-          }}
-        >
-          {problems.map(({ icon: Icon, title, body }) => (
+
+        <div className="divide-y divide-border">
+          {problems.map(({ icon: Icon, title, body }, i) => (
             <motion.div
               key={title}
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-              }}
-              whileHover={{ backgroundColor: "hsl(0, 0%, 100%)" }}
-              transition={{ duration: 0.2 }}
-              className="py-8 md:py-0 md:px-10 first:md:pl-0 last:md:pr-0 rounded-lg"
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+              className="flex gap-8 py-9 group"
             >
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent/10 mb-5">
-                <Icon className="h-4.5 w-4.5 text-accent" />
+              <span className="font-mono text-xs text-foreground-subtle pt-0.5 shrink-0 w-6">
+                0{i + 1}
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2.5 mb-2.5">
+                  <Icon className="h-4 w-4 text-foreground-subtle shrink-0 group-hover:text-foreground transition-colors duration-200" />
+                  <h3 className="text-base font-semibold text-foreground">{title}</h3>
+                </div>
+                <p className="text-sm text-foreground-muted leading-[1.7] max-w-2xl">{body}</p>
               </div>
-              <h3 className="font-display text-lg font-semibold text-foreground mb-3">
-                {title}
-              </h3>
-              <p className="text-sm text-foreground-muted leading-relaxed">{body}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

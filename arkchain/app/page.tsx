@@ -12,49 +12,45 @@ import { TechCredibility } from "@/components/landing/tech-credibility";
 import { FinalCta } from "@/components/landing/final-cta";
 
 function LandingNav() {
-  const [solid, setSolid] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handler = () => setSolid(window.scrollY > 24);
+    const handler = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handler, { passive: true });
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        solid
-          ? "bg-surface/95 backdrop-blur-md border-b border-border shadow-sm"
-          : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-200 ${
+        scrolled ? "bg-background/95 backdrop-blur-sm border-b border-border" : "bg-transparent"
       }`}
     >
-      <div className="max-w-5xl mx-auto flex h-16 items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+      <div className="max-w-5xl mx-auto flex h-14 items-center justify-between px-6">
+        <Link href="/" className="flex items-center gap-2 shrink-0">
           <img
-            src="/logo-with-name.png"
+            src="/logo.png"
             alt="ArkChain"
-            className="h-7 w-auto"
-            style={{ objectFit: "contain" }}
+            className="h-6 w-6 object-contain"
+            style={{ mixBlendMode: "multiply" }}
           />
+          <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-6 text-sm text-foreground-muted">
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Plataforma</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Para emisores</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Para reguladores</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Recursos</Link>
+        <nav className="hidden md:flex items-center gap-5 text-[13px] text-foreground-subtle">
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Plataforma</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Para emisores</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Para reguladores</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Recursos</Link>
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            href="/login"
-            className="text-sm text-foreground-muted hover:text-foreground transition-colors px-3 py-1.5"
-          >
+          <Link href="/login" className="text-[13px] text-foreground-subtle hover:text-foreground transition-colors px-3 py-1.5">
             Entrar
           </Link>
           <Link
             href="/login"
-            className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover transition-colors shadow-sm"
+            className="rounded-lg bg-foreground px-4 py-1.5 text-[13px] font-medium text-background hover:bg-primary-hover transition-colors"
           >
             Solicitar acceso
           </Link>
@@ -66,45 +62,32 @@ function LandingNav() {
 
 function Footer() {
   return (
-    <footer className="border-t border-border bg-surface py-12 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <img
-                src="/logo-with-name.png"
-                alt="ArkChain"
-                className="h-6 w-auto"
-                style={{ objectFit: "contain" }}
-              />
-            </div>
-            <p className="text-xs text-foreground-subtle leading-relaxed">
-              Infraestructura on-chain para equity crowdfunding regulado en LATAM.
-            </p>
-          </div>
-          {[
-            { title: "Producto", links: ["Plataforma", "Marketplace", "Auditoría", "Reportes"] },
-            { title: "Compañía", links: ["Sobre nosotros", "Blog", "Contacto", "Careers"] },
-            { title: "Legal", links: ["Términos de uso", "Privacidad", "Compliance", "CNBV-1437"] },
-          ].map(({ title, links }) => (
-            <div key={title}>
-              <p className="text-xs font-semibold text-foreground mb-3 uppercase tracking-wider">{title}</p>
-              <ul className="space-y-2">
-                {links.map((l) => (
-                  <li key={l}>
-                    <span className="text-xs text-foreground-subtle hover:text-foreground transition-colors cursor-pointer">{l}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <footer className="border-t border-border py-10 px-6">
+      <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+        <div className="flex items-center gap-2">
+          <img
+            src="/logo.png"
+            alt="ArkChain"
+            className="h-5 w-5 object-contain"
+            style={{ mixBlendMode: "multiply" }}
+          />
+          <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
+          <span className="text-foreground-subtle text-xs ml-2">
+            Infraestructura on-chain para equity crowdfunding regulado en LATAM.
+          </span>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-5 text-xs text-foreground-subtle">
+          {["Términos de uso", "Privacidad", "Compliance", "CNBV-1437"].map((l) => (
+            <span key={l} className="hover:text-foreground transition-colors cursor-pointer">{l}</span>
           ))}
         </div>
-        <div className="flex items-center justify-between border-t border-border pt-6">
-          <p className="text-xs text-foreground-subtle">© 2026 ArkChain. Todos los derechos reservados.</p>
-          <button className="text-xs text-foreground-subtle flex items-center gap-1 hover:text-foreground transition-colors">
-            México (ES) <span className="ml-1">▾</span>
-          </button>
-        </div>
+      </div>
+      <div className="max-w-5xl mx-auto mt-8 pt-6 border-t border-border flex items-center justify-between">
+        <p className="text-xs text-foreground-subtle">© 2026 ArkChain. Todos los derechos reservados.</p>
+        <button className="text-xs text-foreground-subtle hover:text-foreground transition-colors flex items-center gap-1">
+          México (ES) <span>▾</span>
+        </button>
       </div>
     </footer>
   );
@@ -114,7 +97,7 @@ export default function LandingPage() {
   return (
     <>
       <LandingNav />
-      <main className="pt-16">
+      <main className="pt-14">
         <Hero />
         <StatsStrip />
         <ProblemSection />

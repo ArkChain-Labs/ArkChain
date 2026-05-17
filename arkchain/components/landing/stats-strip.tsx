@@ -11,28 +11,22 @@ const stats = [
 
 export function StatsStrip() {
   return (
-    <section className="py-16 px-6 border-t border-b border-border bg-surface">
+    <section className="border-t border-border px-6 py-14">
       <div className="max-w-5xl mx-auto">
         <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-8"
+          className="grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-border"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-64px" }}
-          variants={{
-            hidden: {},
-            visible: { transition: { staggerChildren: 0.1 } },
-          }}
+          viewport={{ once: true, margin: "-40px" }}
+          variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.09 } } }}
         >
-          {stats.map(({ value, label }) => (
+          {stats.map(({ value, label }, i) => (
             <motion.div
               key={label}
-              variants={{
-                hidden: { opacity: 0, y: 16 },
-                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-              }}
-              className="text-center md:text-left"
+              variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: { duration: 0.45 } } }}
+              className="px-8 first:pl-0 last:pr-0"
             >
-              <p className="font-mono text-4xl font-bold text-primary tabular mb-1">
+              <p className="font-mono text-[2.4rem] font-bold text-foreground tabular leading-none mb-1.5">
                 {value}
               </p>
               <p className="text-xs text-foreground-subtle leading-snug">{label}</p>

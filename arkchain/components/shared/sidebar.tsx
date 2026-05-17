@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  ShoppingCart,
-  LayoutGrid,
-  ShieldCheck,
-  FileText,
-  Wallet,
-} from "lucide-react";
+import { BarChart3, ShoppingCart, LayoutGrid, ShieldCheck, FileText, Wallet } from "lucide-react";
 import { useAccount } from "wagmi";
 import { ProfileSwitcher } from "./profile-switcher";
 import { useUserRole } from "@/lib/store/user-role";
@@ -38,26 +31,27 @@ export function Sidebar() {
   const nav = navByRole[role];
 
   return (
-    <aside className="flex h-full w-60 shrink-0 flex-col bg-primary">
+    <aside className="flex h-full w-52 shrink-0 flex-col border-r border-border bg-background">
       {/* Logo */}
-      <div className="flex items-center px-4 py-5">
+      <div className="flex items-center gap-2.5 px-4 py-5">
         <img
-          src="/logo-with-name.png"
+          src="/logo.png"
           alt="ArkChain"
-          className="h-7 w-auto"
-          style={{ filter: "brightness(0) invert(1)", objectFit: "contain" }}
+          className="h-6 w-6 object-contain"
+          style={{ mixBlendMode: "multiply" }}
         />
+        <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
       </div>
 
       {/* Profile switcher */}
-      <div className="px-2 pb-3">
+      <div className="px-2.5 pb-3">
         <ProfileSwitcher />
       </div>
 
-      <div className="mx-4 h-px bg-primary-foreground/10" />
+      <div className="h-px bg-border mx-3" />
 
       {/* Nav */}
-      <nav className="flex-1 px-2 py-3 space-y-0.5">
+      <nav className="flex-1 px-2 py-2.5 space-y-px">
         {nav.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(href + "/");
           return (
@@ -65,10 +59,10 @@ export function Sidebar() {
               key={href}
               href={href}
               className={cn(
-                "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors",
+                "flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-colors",
                 active
-                  ? "bg-primary-foreground/15 text-primary-foreground font-medium"
-                  : "text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+                  ? "bg-foreground text-background font-medium"
+                  : "text-foreground-muted hover:bg-surface hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
@@ -78,20 +72,18 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Wallet indicator */}
-      <div className="p-3 border-t border-primary-foreground/10">
-        <div className="flex items-center gap-2 rounded-lg px-3 py-2 bg-primary-foreground/5">
-          <Wallet className="h-3.5 w-3.5 text-primary-foreground/60 shrink-0" />
+      {/* Wallet */}
+      <div className="p-2.5 border-t border-border">
+        <div className="flex items-center gap-2 rounded-lg px-3 py-2.5 bg-surface">
+          <Wallet className="h-3.5 w-3.5 text-foreground-subtle shrink-0" />
           <div className="min-w-0">
             {isConnected && address ? (
               <>
-                <p className="text-[10px] text-primary-foreground/50 leading-tight">Conectado</p>
-                <p className="text-xs font-mono text-primary-foreground/80 truncate">
-                  {formatAddress(address)}
-                </p>
+                <p className="text-[10px] text-foreground-subtle leading-tight">Conectado</p>
+                <p className="text-xs font-mono text-foreground truncate">{formatAddress(address)}</p>
               </>
             ) : (
-              <p className="text-xs text-primary-foreground/50">Sin wallet conectada</p>
+              <p className="text-xs text-foreground-subtle">Sin wallet</p>
             )}
           </div>
         </div>
