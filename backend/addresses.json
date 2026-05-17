@@ -1,20 +1,20 @@
 {
   "network": "fuji",
   "chainId": "43113",
-  "deployedAt": "2026-05-16T06:42:17.566Z",
+  "deployedAt": "2026-05-17T05:40:04.992Z",
   "auditorAddress": "0x67bFA2Dc3bC228fC4947683CC7f10ad1527acd77",
   "issuerAddress": "0x47bFb16F80E892d8BC2dC7aaE2312979e4016B17",
   "contracts": {
-    "MockUSDC": "0x6aE098cCDC0098D7106A7Ed9428D78564d97CBED",
-    "EncryptedERC": "0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2",
-    "Registrar": "0x5acCC50Af240b25A9f63Bd34A4Ae0ffD7d178D54",
-    "OrderBook": "0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10"
+    "MockUSDC": "0xf9fd07ed0b26c74388015ce381E9EcB18ED4C120",
+    "EncryptedERC": "0x95174aA6Fb32157Cf5b57ce8f48Bd8B36D676292",
+    "Registrar": "0xc413D0014f60dba06b5aC9A0734ff95cc01CDe03",
+    "OrderBook": "0x20F4e7E2d87ad8C20D84070855Ae79EeAE41E981"
   },
   "verifiers": {
-    "registrationVerifier": "0xB8f90c6b2FFdc3a744E1283B4e726dC6775330d9",
-    "mintVerifier": "0x302Bb3B26651989929b2204F8A7c5181Ea15E3c4",
-    "withdrawVerifier": "0xe15E0Ee0E93eEe19CF68B46d122A99eeE093bC8e",
-    "transferVerifier": "0x1BD023642A410Daff43a5d9A759cdfA876fF6bCF",
-    "burnVerifier": "0x29679D988B54Fe9646f2cD6bBfEd575037c10F0c"
+    "registrationVerifier": "0xFf0Faf0A337323612a3bd70CAfAA5f2419C73470",
+    "mintVerifier": "0x87E7c2f8bFf5E6206c6606A97231B2408dE43198",
+    "withdrawVerifier": "0x4fda7ac767A73195643cDaD440D05812fC4B6d64",
+    "transferVerifier": "0xbAFFDb130206AA21C78896E44b8a70c57DC64330",
+    "burnVerifier": "0xa4976d8b6642097Dfb3B993e2fdA36Bac93C7BEe"
   }
 }
