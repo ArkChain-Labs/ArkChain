@@ -1,4 +1,7 @@
+"use client";
+
 import { Lock, BarChart2, ShieldCheck } from "lucide-react";
+import { motion } from "framer-motion";
 
 const views = [
   {
@@ -46,17 +49,44 @@ export function ThreeViews() {
   return (
     <section className="py-20 px-6 bg-surface">
       <div className="max-w-5xl mx-auto">
-        <p className="text-xs font-medium tracking-widest text-foreground-subtle uppercase mb-3">
+        <motion.p
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="text-xs font-medium tracking-widest text-foreground-subtle uppercase mb-3"
+        >
           Una blockchain, tres vistas
-        </p>
-        <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-12 max-w-lg">
+        </motion.p>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.05 }}
+          className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-12 max-w-lg"
+        >
           La misma información. El acceso correcto para cada rol.
-        </h2>
-        <div className="grid md:grid-cols-3 gap-4">
+        </motion.h2>
+        <motion.div
+          className="grid md:grid-cols-3 gap-4"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-64px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.12 } },
+          }}
+        >
           {views.map(({ role, icon: Icon, iconColor, iconBg, accent, rows, caption }) => (
-            <div
+            <motion.div
               key={role}
-              className={`rounded-lg border border-border bg-surface-elevated overflow-hidden border-t-2 ${accent}`}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+              }}
+              whileHover={{ y: -4, boxShadow: "0 16px 40px rgba(26, 54, 93, 0.10)" }}
+              transition={{ duration: 0.2 }}
+              className={`rounded-lg border border-border bg-surface-elevated overflow-hidden border-t-2 ${accent} cursor-default`}
             >
               {/* Browser chrome */}
               <div className="flex items-center gap-1.5 px-3 py-2 border-b border-border bg-surface">
@@ -87,9 +117,9 @@ export function ThreeViews() {
                 </div>
                 <p className="mt-3 text-[10px] text-foreground-subtle">{caption}</p>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
