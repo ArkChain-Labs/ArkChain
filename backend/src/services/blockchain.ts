@@ -45,6 +45,11 @@ export function saveWavyScore(txHash: string, score: number) {
 export async function fetchTradeEvents(
   fromBlock: number = 0
 ): Promise<TradeEvent[]> {
+  if (fromBlock === 0) {
+    const current = await provider.getBlockNumber();
+    fromBlock = Math.max(0, current - 49_000);
+  }
+
   const orderBook = getOrderBook();
   const filter = orderBook.filters.OrderExecuted();
 
