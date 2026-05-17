@@ -631,10 +631,10 @@ export default function AuditoriaPage() {
           {/* Header */}
           <div className="px-6 py-4 border-b border-border">
             <p className="text-xs font-semibold text-foreground-subtle uppercase tracking-widest mb-0.5">
-              Demo — momento "wow"
+              Privacidad selectiva eERC20
             </p>
             <h2 className="font-display text-lg font-semibold text-foreground">
-              ¿Cómo ve esto el inversionista?
+              Vista del inversionista vs. vista del regulador
             </h2>
             <p className="text-xs text-foreground-subtle mt-0.5">
               La misma transacción, dos perspectivas — separadas por la llave de auditor eERC20.

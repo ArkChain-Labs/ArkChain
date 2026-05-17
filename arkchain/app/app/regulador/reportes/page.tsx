@@ -153,13 +153,16 @@ export default function ReportesPage() {
   }
 
   async function handleGenerate() {
+    if (format === "pdf") {
+      addToast("Formato PDF disponible en la version enterprise");
+      return;
+    }
+    if (format === "xbrl") {
+      addToast("Formato XBRL disponible en la version enterprise");
+      return;
+    }
     setLoading(true);
     try {
-      if (format === "pdf") {
-        addToast("Formato PDF disponible en la version enterprise");
-      } else if (format === "xbrl") {
-        addToast("Formato XBRL disponible en la version enterprise");
-      }
       await new Promise((r) => setTimeout(r, 800));
       downloadCsv(`arkchain-reporte-${reportType}-${from}.csv`);
     } finally {
