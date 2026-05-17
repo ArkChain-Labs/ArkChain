@@ -154,7 +154,7 @@ export default function ReportesPage() {
 
   async function handleGenerate() {
     if (format === "pdf") {
-      addToast("Formato PDF disponible en la version enterprise");
+      window.print();
       return;
     }
     if (format === "xbrl") {
@@ -177,7 +177,7 @@ export default function ReportesPage() {
   return (
     <>
       {/* Toast container */}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none print:hidden">
         {toasts.map((t) => (
           <Toast key={t.id} msg={t} onDone={removeToast} />
         ))}
@@ -185,7 +185,7 @@ export default function ReportesPage() {
 
       <TooltipProvider>
         <div className="max-w-5xl mx-auto space-y-5">
-          <div>
+          <div className="print:hidden">
             <h1 className="font-display text-2xl font-semibold text-foreground">
               Generador de reportes regulatorios
             </h1>
@@ -194,9 +194,9 @@ export default function ReportesPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-6 print:block">
             {/* Left: Configurator */}
-            <div className="space-y-5">
+            <div className="space-y-5 print:hidden">
               {/* Report type */}
               <div>
                 <p className="text-xs font-semibold text-foreground uppercase tracking-wide mb-3">
@@ -327,7 +327,7 @@ export default function ReportesPage() {
 
             {/* Right: Preview */}
             <div className="rounded-lg border border-border bg-surface-elevated overflow-hidden flex flex-col">
-              <div className="bg-primary px-4 py-3 flex items-center gap-2">
+              <div className="bg-primary px-4 py-3 flex items-center gap-2 print:hidden">
                 <FileText className="h-4 w-4 text-primary-foreground/70" />
                 <span className="text-xs font-medium text-primary-foreground">Vista previa del documento</span>
               </div>
@@ -361,7 +361,7 @@ export default function ReportesPage() {
 
                 <Separator className="my-4" />
 
-                <p className="text-xs text-foreground-subtle italic mb-4">
+                <p className="text-xs text-foreground-subtle italic mb-4 print:hidden">
                   [Vista previa parcial. Generar para ver el reporte completo con todas las transacciones.]
                 </p>
 
@@ -381,7 +381,7 @@ export default function ReportesPage() {
                 </div>
               </div>
 
-              <div className="border-t border-border p-4 flex gap-2">
+              <div className="border-t border-border p-4 flex gap-2 print:hidden">
                 <button
                   onClick={handleDraft}
                   className="flex-1 rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground hover:bg-surface transition-colors flex items-center justify-center gap-1.5"
