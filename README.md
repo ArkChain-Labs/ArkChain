@@ -78,7 +78,7 @@ La adopción institucional de Avalanche por Franklin Templeton (FOBXX, agosto 20
 
 **URL:** [https://ark-chain.vercel.app](https://ark-chain.vercel.app)
 
-La demo corre con datos mock realistas sobre Avalanche Fuji Testnet. No se requiere wallet real ni fondos para navegar las primeras dos vistas.
+La vista de Regulador/Auditoría muestra datos reales de Avalanche Fuji (transacciones on-chain). Las vistas de Inversionista, Emisor y Marketplace funcionan con datos realistas. No se requiere wallet real ni fondos para navegar.
 
 ### Las 3 vistas del sistema
 
@@ -153,20 +153,21 @@ La demo corre con datos mock realistas sobre Avalanche Fuji Testnet. No se requi
 
 | Contrato | Dirección | Función |
 |---|---|---|
-| **EncryptedERC** | `0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2` | Token eERC20 con privacidad y auditor mode |
-| **Registrar** | `0x5acCC50Af240b25A9f63Bd34A4Ae0ffD7d178D54` | Registro ZK de wallets de inversores |
-| **OrderBook** | `0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10` | Mercado secundario on-chain |
-| **MockUSDC** | `0x6aE098cCDC0098D7106A7Ed9428D78564d97CBED` | Stablecoin de prueba para liquidación |
-| RegistrationVerifier | `0xB8f90c6b2FFdc3a744E1283B4e726dC6775330d9` | Verificador ZK de registro |
-| MintVerifier | `0x302Bb3B26651989929b2204F8A7c5181Ea15E3c4` | Verificador ZK de emisión |
-| TransferVerifier | `0x1BD023642A410Daff43a5d9A759cdfA876fF6bCF` | Verificador ZK de transferencia |
-| WithdrawVerifier | `0xe15E0Ee0E93eEe19CF68B46d122A99eeE093bC8e` | Verificador ZK de retiro |
-| BurnVerifier | `0x29679D988B54Fe9646f2cD6bBfEd575037c10F0c` | Verificador ZK de quema |
+| **EncryptedERC** | `0x95174aA6Fb32157Cf5b57ce8f48Bd8B36D676292` | Token eERC20 con privacidad y auditor mode |
+| **Registrar** | `0xc413D0014f60dba06b5aC9A0734ff95cc01CDe03` | Registro ZK de wallets de inversores |
+| **OrderBook** | `0x20F4e7E2d87ad8C20D84070855Ae79EeAE41E981` | Mercado secundario on-chain |
+| **MockUSDC** | `0xf9fd07ed0b26c74388015ce381E9EcB18ED4C120` | Stablecoin de prueba para liquidación |
+| RegistrationVerifier | `0xFf0Faf0A337323612a3bd70CAfAA5f2419C73470` | Verificador ZK de registro |
+| MintVerifier | `0x87E7c2f8bFf5E6206c6606A97231B2408dE43198` | Verificador ZK de emisión |
+| TransferVerifier | `0xbAFFDb130206AA21C78896E44b8a70c57DC64330` | Verificador ZK de transferencia |
+| WithdrawVerifier | `0x4fda7ac767A73195643cDaD440D05812fC4B6d64` | Verificador ZK de retiro |
+| BurnVerifier | `0xa4976d8b6642097Dfb3B993e2fdA36Bac93C7BEe` | Verificador ZK de quema |
 
 **Auditor address (demo CNBV):** `0x67bFA2Dc3bC228fC4947683CC7f10ad1527acd77`  
 **Issuer address (demo FintechMX):** `0x47bFb16F80E892d8BC2dC7aaE2312979e4016B17`  
-**Red:** Avalanche Fuji Testnet · Chain ID: 43113 · Desplegado: 2026-05-16  
-Ver contratos en [Snowtrace Testnet](https://testnet.snowtrace.io/address/0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2).
+**Investor address (demo):** `0xB34734E4E23D6C1bFF723ba867EB362fC4E5404B`  
+**Red:** Avalanche Fuji Testnet · Chain ID: 43113 · Desplegado: 2026-05-17  
+Ver contratos en [Snowtrace Testnet](https://testnet.snowtrace.io/address/0x95174aA6Fb32157Cf5b57ce8f48Bd8B36D676292).
 
 ---
 
@@ -310,8 +311,8 @@ El problema regulatorio central del mercado secundario de equity privado es la t
 |---|---|
 | Demo en vivo | [https://ark-chain.vercel.app](https://ark-chain.vercel.app) |
 | Repositorio | [github.com/ArkChain-Labs/ArkChain](https://github.com/ArkChain-Labs/ArkChain) |
-| EncryptedERC en Snowtrace | [testnet.snowtrace.io](https://testnet.snowtrace.io/address/0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2) |
-| OrderBook en Snowtrace | [testnet.snowtrace.io](https://testnet.snowtrace.io/address/0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10) |
+| EncryptedERC en Snowtrace | [testnet.snowtrace.io](https://testnet.snowtrace.io/address/0x95174aA6Fb32157Cf5b57ce8f48Bd8B36D676292) |
+| OrderBook en Snowtrace | [testnet.snowtrace.io](https://testnet.snowtrace.io/address/0x20F4e7E2d87ad8C20D84070855Ae79EeAE41E981) |
 | eERC20 by Ava Labs | [github.com/ava-labs/EncryptedERC](https://github.com/ava-labs/EncryptedERC) |
 | Avalanche Builder Hub | [build.avax.network](https://build.avax.network) |
 | Addresses desplegadas | [addresses.json](./addresses.json) |
@@ -323,7 +324,7 @@ El problema regulatorio central del mercado secundario de equity privado es la t
 
 ### Requisitos previos
 - Node.js ≥ 18
-- Wallet Avalanche Fuji (MetaMask con Fuji: RPC `https://api.avax-test.network/ext/bc/C/rpc`, Chain ID `43113`)
+- Wallet Avalanche Fuji (MetaMask con Fuji: RPC `https://avalanche-fuji-c-chain-rpc.publicnode.com`, Chain ID `43113`)
 - AVAX Fuji para gas ([faucet.avax.network](https://faucet.avax.network))
 
 ### Frontend (Next.js)
@@ -345,7 +346,7 @@ cd ArkChain/backend
 npm install
 cp .env.example .env
 npm run dev
-# → http://localhost:3001
+# → http://localhost:3000
 ```
 
 ### Contratos (Hardhat + Fuji)
@@ -364,20 +365,17 @@ npx hardhat run scripts/deploy.ts --network fuji
 
 **`arkchain/.env.local`**
 ```env
-NEXT_PUBLIC_USE_MOCK=true          # true para demo con datos mock
+NEXT_PUBLIC_USE_MOCK=false         # false para datos reales; true para mock local
 NEXT_PUBLIC_WC_PROJECT_ID=...      # WalletConnect project ID
 BACKEND_URL=https://arkchain-production.up.railway.app
 AUDITOR_API_KEY=...
 ```
 
-**`backend/.env`**
+**`backend/.env` (local) / Railway variables (producción)**
 ```env
-PORT=3001
-FUJI_RPC_URL=https://api.avax-test.network/ext/bc/C/rpc
-ENCRYPTED_ERC_ADDRESS=0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2
-ORDER_BOOK_ADDRESS=0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10
+FUJI_RPC=https://avalanche-fuji-c-chain-rpc.publicnode.com
+RELAYER_PRIVATE_KEY=...            # Wallet que firma executeOrder como relayer
 AUDITOR_API_KEY=...
-WAVY_NODE_API_KEY=...
 ```
 
 ---
