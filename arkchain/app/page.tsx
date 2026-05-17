@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "@/lib/store/theme";
 import { Hero } from "@/components/landing/hero";
 import { ProblemSection } from "@/components/landing/problem-section";
@@ -11,6 +12,19 @@ import { ExpansionMap } from "@/components/landing/expansion-map";
 import { StatsStrip } from "@/components/landing/stats-strip";
 import { TechCredibility } from "@/components/landing/tech-credibility";
 import { FinalCta } from "@/components/landing/final-cta";
+
+function ThemeToggle() {
+  const { dark, toggle } = useTheme();
+  return (
+    <button
+      onClick={toggle}
+      title={dark ? "Modo claro" : "Modo oscuro"}
+      className="flex items-center justify-center w-8 h-8 rounded-lg border border-border text-foreground-subtle hover:bg-surface hover:text-foreground transition-colors"
+    >
+      {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+    </button>
+  );
+}
 
 function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
@@ -47,6 +61,7 @@ function LandingNav() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <Link href="/login" className="text-[13px] text-foreground-subtle hover:text-foreground transition-colors px-3 py-1.5">
             Entrar
           </Link>
