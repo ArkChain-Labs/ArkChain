@@ -87,7 +87,7 @@ export const MXN_PER_USDC = 17.5;
 
 export const fujiClient = createPublicClient({
   chain: avalancheFuji,
-  transport: http("https://api.avax-test.network/ext/bc/C/rpc"),
+  transport: http("https://avalanche-fuji-c-chain-rpc.publicnode.com"),
 });
 
 // Scan the last ~2 days of blocks to capture all post-deploy events

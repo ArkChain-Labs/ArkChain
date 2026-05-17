@@ -18,7 +18,7 @@ const ORDER_BOOK_ABI = [
 ];
 
 export const provider = new ethers.JsonRpcProvider(
-  process.env.FUJI_RPC ?? "https://api.avax-test.network/ext/bc/C/rpc"
+  process.env.FUJI_RPC ?? "https://avalanche-fuji-c-chain-rpc.publicnode.com"
 );
 
 export function getRelayerWallet(): ethers.Wallet {
