@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTheme } from "@/lib/store/theme";
 import { Hero } from "@/components/landing/hero";
 import { ProblemSection } from "@/components/landing/problem-section";
 import { ThreeViews } from "@/components/landing/three-views";
@@ -13,6 +14,7 @@ import { FinalCta } from "@/components/landing/final-cta";
 
 function LandingNav() {
   const [scrolled, setScrolled] = useState(false);
+  const { dark } = useTheme();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -29,10 +31,10 @@ function LandingNav() {
       <div className="max-w-5xl mx-auto flex h-14 items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2 shrink-0">
           <img
-            src="/logo.png"
+            src={dark ? "/logo_night.png" : "/logo.png"}
             alt="ArkChain"
             className="h-6 w-6 object-contain"
-            style={{ mixBlendMode: "multiply" }}
+            style={dark ? undefined : { mixBlendMode: "multiply" }}
           />
           <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
         </Link>
@@ -61,15 +63,16 @@ function LandingNav() {
 }
 
 function Footer() {
+  const { dark } = useTheme();
   return (
     <footer className="border-t border-border py-10 px-6">
       <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-center gap-2">
           <img
-            src="/logo.png"
+            src={dark ? "/logo_night.png" : "/logo.png"}
             alt="ArkChain"
             className="h-5 w-5 object-contain"
-            style={{ mixBlendMode: "multiply" }}
+            style={dark ? undefined : { mixBlendMode: "multiply" }}
           />
           <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
           <span className="text-foreground-subtle text-xs ml-2">

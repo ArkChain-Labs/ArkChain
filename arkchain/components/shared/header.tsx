@@ -1,8 +1,9 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronRight, LogOut } from "lucide-react";
+import { ChevronRight, LogOut, Sun, Moon } from "lucide-react";
 import { useDisconnect, useAccount } from "wagmi";
+import { useTheme } from "@/lib/store/theme";
 
 const breadcrumbMap: Record<string, string[]> = {
   "/app/portafolio": ["App", "Portafolio"],
@@ -18,6 +19,7 @@ export function Header() {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const router = useRouter();
+  const { dark, toggle } = useTheme();
 
   function handleDisconnect() {
     disconnect();
@@ -43,6 +45,13 @@ export function Header() {
             {address.slice(0, 6)}…{address.slice(-4)}
           </span>
         )}
+        <button
+          onClick={toggle}
+          title={dark ? "Modo claro" : "Modo oscuro"}
+          className="flex items-center justify-center rounded border border-border w-7 h-7 text-foreground-muted hover:bg-surface hover:text-foreground transition-colors"
+        >
+          {dark ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+        </button>
         <button
           onClick={handleDisconnect}
           title="Desconectar wallet"

@@ -10,10 +10,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useTheme } from "@/lib/store/theme";
 
 export default function LoginPage() {
   const { isConnected } = useAccount();
   const router = useRouter();
+  const { dark } = useTheme();
 
   useEffect(() => {
     if (isConnected) router.push("/app/portafolio");
@@ -26,10 +28,10 @@ export default function LoginPage() {
         <div className="hidden lg:flex lg:w-[55%] flex-col justify-between bg-surface p-12">
           <Link href="/" className="flex items-center gap-2.5">
             <img
-              src="/logo.png"
+              src={dark ? "/logo_night.png" : "/logo.png"}
               alt="ArkChain"
               className="h-7 w-7 object-contain"
-              style={{ mixBlendMode: "multiply" }}
+              style={dark ? undefined : { mixBlendMode: "multiply" }}
             />
             <span className="text-sm font-semibold text-foreground tracking-tight">ArkChain</span>
           </Link>
