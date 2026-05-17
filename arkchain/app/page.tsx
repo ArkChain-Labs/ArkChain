@@ -22,25 +22,27 @@ function LandingNav() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-200 ${
-        solid ? "bg-background/95 backdrop-blur border-b border-border" : "bg-transparent"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        solid
+          ? "bg-surface/95 backdrop-blur-md border-b border-border shadow-sm"
+          : "bg-transparent"
       }`}
     >
       <div className="max-w-5xl mx-auto flex h-16 items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-display font-bold text-sm">
-            A
-          </div>
-          <span className="font-display text-base font-semibold text-foreground tracking-tight">
-            ArkChain
-          </span>
+        <Link href="/" className="flex items-center gap-2.5 shrink-0">
+          <img
+            src="/logo-with-name.png"
+            alt="ArkChain"
+            className="h-7 w-auto"
+            style={{ objectFit: "contain" }}
+          />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm text-foreground-muted">
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Plataforma</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Para emisores</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Para reguladores</Link>
-          <Link href="#como-funciona" className="hover:text-foreground transition-colors">Recursos</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Plataforma</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Para emisores</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Para reguladores</Link>
+          <Link href="#como-funciona" className="hover:text-foreground transition-colors py-1">Recursos</Link>
         </nav>
 
         <div className="flex items-center gap-2">
@@ -52,7 +54,7 @@ function LandingNav() {
           </Link>
           <Link
             href="/login"
-            className="rounded-lg bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary-hover transition-colors"
+            className="rounded-lg bg-accent px-4 py-1.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover transition-colors shadow-sm"
           >
             Solicitar acceso
           </Link>
@@ -69,8 +71,12 @@ function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground font-display font-bold text-xs">A</div>
-              <span className="font-display text-sm font-semibold text-foreground">ArkChain</span>
+              <img
+                src="/logo-with-name.png"
+                alt="ArkChain"
+                className="h-6 w-auto"
+                style={{ objectFit: "contain" }}
+              />
             </div>
             <p className="text-xs text-foreground-subtle leading-relaxed">
               Infraestructura on-chain para equity crowdfunding regulado en LATAM.
@@ -95,7 +101,7 @@ function Footer() {
         </div>
         <div className="flex items-center justify-between border-t border-border pt-6">
           <p className="text-xs text-foreground-subtle">© 2026 ArkChain. Todos los derechos reservados.</p>
-          <button className="text-xs text-foreground-subtle flex items-center gap-1">
+          <button className="text-xs text-foreground-subtle flex items-center gap-1 hover:text-foreground transition-colors">
             México (ES) <span className="ml-1">▾</span>
           </button>
         </div>

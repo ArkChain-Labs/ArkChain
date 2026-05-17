@@ -2,31 +2,32 @@
 @import "tw-animate-css";
 
 :root {
-  --background: hsl(41, 35%, 93%);
-  --foreground: hsl(24, 25%, 9%);
-  --foreground-muted: hsl(28, 14%, 31%);
-  --foreground-subtle: hsl(30, 14%, 49%);
+  /* Core palette — Navy × Gold */
+  --background: hsl(213, 33%, 96%);       /* F0F4F8 – cool near-white */
+  --foreground: hsl(215, 55%, 12%);       /* 0D1A2E – deep navy */
+  --foreground-muted: hsl(215, 22%, 40%); /* 4A5E7B – mid-navy-gray */
+  --foreground-subtle: hsl(215, 18%, 62%);/* 8299B5 – soft */
 
-  --surface: hsl(42, 47%, 96%);
+  --surface: hsl(0, 0%, 100%);            /* pure white cards */
   --surface-elevated: hsl(0, 0%, 100%);
 
-  --primary: hsl(156, 60%, 15%);
-  --primary-hover: hsl(153, 56%, 21%);
-  --primary-foreground: hsl(41, 35%, 93%);
+  --primary: hsl(215, 56%, 24%);          /* 1A365D – brand navy */
+  --primary-hover: hsl(215, 52%, 31%);    /* lighter navy */
+  --primary-foreground: hsl(0, 0%, 100%);
 
-  --accent-color: hsl(28, 58%, 41%);
-  --accent-hover: hsl(26, 60%, 34%);
-  --accent-foreground: hsl(41, 35%, 93%);
+  --accent-color: hsl(43, 65%, 52%);      /* D4AF37 – brand gold */
+  --accent-hover: hsl(43, 65%, 43%);      /* deeper gold */
+  --accent-foreground: hsl(215, 56%, 12%);/* dark text on gold */
 
-  --border: hsl(44, 22%, 78%);
-  --border-strong: hsl(41, 16%, 64%);
-  --input: hsl(44, 22%, 78%);
-  --ring: hsl(28, 58%, 41%);
+  --border: hsl(213, 30%, 87%);
+  --border-strong: hsl(213, 25%, 72%);
+  --input: hsl(213, 30%, 87%);
+  --ring: hsl(43, 65%, 52%);
 
-  --success: hsl(75, 49%, 33%);
-  --warning: hsl(41, 73%, 43%);
+  --success: hsl(142, 55%, 35%);
+  --warning: hsl(43, 73%, 43%);
   --danger: hsl(14, 70%, 39%);
-  --encrypted: hsl(198, 13%, 28%);
+  --encrypted: hsl(215, 30%, 38%);
 
   --card: var(--surface);
   --card-foreground: var(--foreground);
@@ -90,6 +91,30 @@
     color: var(--foreground);
     font-family: var(--font-inter), system-ui, sans-serif;
     font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Gold focus rings for all interactive elements */
+  :focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Refined scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--foreground-subtle);
   }
 }
 

@@ -40,13 +40,13 @@ export function Sidebar() {
   return (
     <aside className="flex h-full w-60 shrink-0 flex-col bg-primary">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-4 py-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground font-display font-bold text-sm">
-          A
-        </div>
-        <span className="font-display text-lg font-semibold text-primary-foreground tracking-tight">
-          ArkChain
-        </span>
+      <div className="flex items-center px-4 py-5">
+        <img
+          src="/logo-with-name.png"
+          alt="ArkChain"
+          className="h-7 w-auto"
+          style={{ filter: "brightness(0) invert(1)", objectFit: "contain" }}
+        />
       </div>
 
       {/* Profile switcher */}

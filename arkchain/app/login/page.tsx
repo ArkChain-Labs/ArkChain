@@ -30,28 +30,19 @@ export default function LoginPage() {
       <div className="flex min-h-screen">
         {/* Left panel */}
         <div className="hidden lg:flex lg:w-[60%] flex-col justify-between bg-primary p-12 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-[0.06]">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div
-                key={i}
-                className="absolute border border-primary-foreground"
-                style={{
-                  width: `${200 + i * 60}px`,
-                  height: `${200 + i * 60}px`,
-                  borderRadius: "50%",
-                  top: "50%",
-                  left: "40%",
-                  transform: "translate(-50%, -50%)",
-                }}
-              />
-            ))}
-          </div>
+          {/* Geometric arc decorations */}
+          <div className="absolute -bottom-48 -left-48 h-[640px] w-[640px] rounded-full border border-primary-foreground/5 pointer-events-none" />
+          <div className="absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full border border-primary-foreground/5 pointer-events-none" />
+          <div className="absolute -top-48 -right-48 h-[640px] w-[640px] rounded-full border border-primary-foreground/5 pointer-events-none" />
+          <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full border border-primary-foreground/5 pointer-events-none" />
 
           <Link href="/" className="flex items-center gap-2.5 relative z-10">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground font-display font-bold">
-              A
-            </div>
-            <span className="font-display text-xl font-semibold text-primary-foreground">ArkChain</span>
+            <img
+              src="/logo-with-name.png"
+              alt="ArkChain"
+              className="h-8 w-auto"
+              style={{ filter: "brightness(0) invert(1)", objectFit: "contain" }}
+            />
           </Link>
 
           <div className="relative z-10">
@@ -74,6 +65,16 @@ export default function LoginPage() {
         {/* Right panel */}
         <div className="flex-1 flex items-center justify-center bg-background p-6">
           <div className="w-full max-w-sm">
+            {/* Mobile logo */}
+            <div className="flex lg:hidden justify-center mb-8">
+              <img
+                src="/logo-with-name.png"
+                alt="ArkChain"
+                className="h-8 w-auto"
+                style={{ objectFit: "contain" }}
+              />
+            </div>
+
             <div className="mb-8">
               <h1 className="font-display text-2xl font-semibold text-foreground mb-2">
                 Entrar a ArkChain
@@ -88,7 +89,7 @@ export default function LoginPage() {
                 {({ openConnectModal }) => (
                   <button
                     onClick={openConnectModal}
-                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary-hover transition-colors"
+                    className="w-full flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground hover:bg-accent-hover transition-colors shadow-sm"
                   >
                     Conectar Core Wallet
                   </button>
@@ -99,7 +100,7 @@ export default function LoginPage() {
                 {({ openConnectModal }) => (
                   <button
                     onClick={openConnectModal}
-                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-surface transition-colors"
+                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:border-border-strong transition-colors"
                   >
                     Conectar MetaMask
                   </button>
@@ -110,7 +111,7 @@ export default function LoginPage() {
                 {({ openConnectModal }) => (
                   <button
                     onClick={openConnectModal}
-                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-surface transition-colors"
+                    className="w-full flex items-center justify-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:border-border-strong transition-colors"
                   >
                     Conectar WalletConnect
                   </button>
@@ -136,7 +137,7 @@ export default function LoginPage() {
                   className="bg-surface border-border"
                 />
               </div>
-              <button className="w-full rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-foreground hover:bg-surface transition-colors">
+              <button className="w-full rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-medium text-foreground hover:border-border-strong transition-colors">
                 Enviar enlace de acceso
               </button>
             </div>
