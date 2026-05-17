@@ -93,8 +93,9 @@ export const fujiClient = createPublicClient({
 export async function getDeployFromBlock(): Promise<bigint> {
   try {
     const current = await fujiClient.getBlockNumber();
-    return current > 100_000n ? current - 100_000n : 0n;
+    const window = BigInt(100_000);
+    return current > window ? current - window : BigInt(0);
   } catch {
-    return 0n;
+    return BigInt(0);
   }
 }

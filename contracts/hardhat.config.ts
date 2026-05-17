@@ -10,7 +10,7 @@ import "solidity-coverage";
 import dotenv from "dotenv";
 dotenv.config();
 
-const FUJI_RPC = "https://api.avax-test.network/ext/bc/C/rpc";
+const FUJI_RPC = process.env.FUJI_RPC_URL ?? "https://avalanche-fuji-c-chain-rpc.publicnode.com";
 const DEPLOYER_KEY = process.env.DEPLOYER_PRIVATE_KEY;
 
 const config: HardhatUserConfig = {
@@ -29,6 +29,7 @@ const config: HardhatUserConfig = {
       url: FUJI_RPC,
       chainId: 43113,
       accounts: DEPLOYER_KEY ? [DEPLOYER_KEY] : [],
+      timeout: 120000,
     },
   },
   gasReporter: {

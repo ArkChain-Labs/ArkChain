@@ -156,29 +156,36 @@ async function main() {
 
     // ── Step 4: Issuer deposits 1 USDC → 100 eERC ─────────────────────────────
     console.log("\n[4/7] Issuer deposits", DEPOSIT_USDC.toString(), "USDC...");
-    const { ciphertext, nonce, authKey } = processPoseidonEncryption(
-      [DEPOSIT_EERC],
-      issuer.publicKey,
-    );
-    const amountPCT = [...ciphertext, ...authKey, nonce] as [
-      bigint, bigint, bigint, bigint, bigint, bigint, bigint,
-    ];
+    const TOKEN_ID_EARLY = 1n;
+    const existingBal = await eERC.balanceOf(issuerWallet.address, TOKEN_ID_EARLY);
+    const alreadyDeposited = BigInt(existingBal.eGCT.c1.x) !== 0n;
 
-    await (await usdc.connect(issuerWallet).approve(await eERC.getAddress(), DEPOSIT_USDC)).wait();
-    await (
-      await eERC
-        .connect(issuerWallet)
-        ["deposit(uint256,address,uint256[7])"](
-          DEPOSIT_USDC,
-          await usdc.getAddress(),
-          amountPCT,
-        )
-    ).wait();
-    console.log("  PrivateMint event emitted.");
+    if (!alreadyDeposited) {
+      const { ciphertext, nonce, authKey } = processPoseidonEncryption(
+        [DEPOSIT_EERC],
+        issuer.publicKey,
+      );
+      const amountPCT = [...ciphertext, ...authKey, nonce] as [
+        bigint, bigint, bigint, bigint, bigint, bigint, bigint,
+      ];
+      await (await usdc.connect(issuerWallet).approve(await eERC.getAddress(), DEPOSIT_USDC)).wait();
+      await (
+        await eERC
+          .connect(issuerWallet)
+          ["deposit(uint256,address,uint256[7])"](
+            DEPOSIT_USDC,
+            await usdc.getAddress(),
+            amountPCT,
+          )
+      ).wait();
+      console.log("  PrivateMint event emitted.");
+    } else {
+      console.log("  Already deposited, skipping mint.");
+    }
 
     // ── Step 5: Transfer 50 eERC to auditor ────────────────────────────────────
     console.log("\n[5/7] Transferring", TRANSFER_EERC.toString(), "eERC to auditor...");
-    const TOKEN_ID = 1n;
+    const TOKEN_ID = TOKEN_ID_EARLY;
     const issuerBal = await eERC.balanceOf(issuerWallet.address, TOKEN_ID);
     const encBal = [
       issuerBal.eGCT.c1.x,
