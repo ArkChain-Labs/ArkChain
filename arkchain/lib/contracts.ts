@@ -1,13 +1,13 @@
-// Deployed on Avalanche Fuji — 2026-05-16
+// Deployed on Avalanche Fuji — 2026-05-17
 // Source of truth: addresses.json at project root
 import { createPublicClient, http, parseAbiItem } from "viem";
 import { avalancheFuji } from "viem/chains";
 
 export const CONTRACT_ADDRESSES = {
-  OrderBook:    "0xb15638921DB21c5e4b1C8Bd85CaE9FC0960ABC10" as `0x${string}`,
-  EncryptedERC: "0x0aD47d0e825BfcFbeD6048615eA697E10964AFb2" as `0x${string}`,
-  MockUSDC:     "0x6aE098cCDC0098D7106A7Ed9428D78564d97CBED" as `0x${string}`,
-  Registrar:    "0x5acCC50Af240b25A9f63Bd34A4Ae0ffD7d178D54" as `0x${string}`,
+  OrderBook:    "0x20F4e7E2d87ad8C20D84070855Ae79EeAE41E981" as `0x${string}`,
+  EncryptedERC: "0x95174aA6Fb32157Cf5b57ce8f48Bd8B36D676292" as `0x${string}`,
+  MockUSDC:     "0xf9fd07ed0b26c74388015ce381E9EcB18ED4C120" as `0x${string}`,
+  Registrar:    "0xc413D0014f60dba06b5aC9A0734ff95cc01CDe03" as `0x${string}`,
 };
 
 export const KNOWN_ADDRESSES: Record<string, string> = {
@@ -79,7 +79,7 @@ export const PRIVATE_MINT_EVENT = parseAbiItem(
 
 // eERC20 contract address → frontend companyId (one EncryptedERC deployed for hackathon)
 export const EERC20_TO_COMPANY_ID: Record<string, string> = {
-  [CONTRACT_ADDRESSES.EncryptedERC.toLowerCase()]: "fintechmx",
+  "0x95174aa6fb32157cf5b57ce8f48bd8b36d676292": "fintechmx",
 };
 
 // Hardcoded rate for MXN↔USDC conversion (no oracle in hackathon)
